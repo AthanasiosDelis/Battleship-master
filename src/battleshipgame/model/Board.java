@@ -69,13 +69,14 @@ public class Board extends Parent {
     
     
     //Makes the tableaux
-    public Board(EventHandler<? super MouseEvent> clickHandler, boolean playerBoard) {
+    //EventHandler<? super MouseEvent> clickHandler,
+    public Board( boolean playerBoard) {
         this.playerBoard = playerBoard;
         for (int row = 0; row < ROW; row++) {
             HBox currentRow = new HBox();
             for (int col = 0; col < COL; col++) {
                 Field field = new Field(row, col);
-                field.setOnMouseClicked(clickHandler);
+                //field.setOnMouseClicked(clickHandler);
                 currentRow.getChildren().add(field);
             }
             rows.getChildren().add(currentRow);
@@ -209,14 +210,7 @@ public class Board extends Parent {
         return (Field) hBox.getChildren().get(col);
     }
 
-    //ÈÅËÅÉ ÁÎÉÏËÏÃÇÓÇ ÔÏ ÐÑÙÉ Ç ÁÍÁÊÇ ÃÉÁ ×ÑÏÍÏ
-    public boolean receiveShot(Field field) {
-        if (!playerBoard) {
-            sleep();
-        }
-             
-        return field.shoot();
-    }
+
     
     //STOP TIME FOR SOME TIME GOOGLE HOW MUCH
     private void sleep() {
@@ -243,7 +237,15 @@ public class Board extends Parent {
     public int getShipsCount() {
         return shipsCount;
     }
-    
+   
+    //ÈÅËÅÉ ÁÎÉÏËÏÃÇÓÇ ÔÏ ÐÑÙÉ Ç ÁÍÁÊÇ ÃÉÁ ×ÑÏÍÏ
+    public boolean receiveShot(Field field) {
+        if (!playerBoard) {
+            sleep();
+        }
+             
+        return field.shoot();
+    }
     //MUST BE COMPARABLE WITH LOCATION
     public class Field extends Rectangle {
 
@@ -256,7 +258,8 @@ public class Board extends Parent {
         private boolean isOccupied = false;
 
         private Battleship battleship;
-
+        
+                
         private Field(int row, int column) {
             super(FIELD_SIZE, FIELD_SIZE);
             this.row = row;
@@ -268,6 +271,15 @@ public class Board extends Parent {
         
         public void setBattleship(Battleship battleship) {
         	this.battleship=battleship;
+        }
+        
+        
+        public void setRow(int row) {
+            this.row = row;
+        }
+
+        public void setCol(int col) {
+            this.column = col;
         }
 
         public int getRow() {

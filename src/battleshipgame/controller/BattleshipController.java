@@ -1,7 +1,7 @@
 package src.battleshipgame.controller;
 
 import src.battleshipgame.model.Battleship;
-//import src.battleshipgame.model.BattleshipFactory;
+import src.battleshipgame.model.Board.Field;
 import src.battleshipgame.model.Board;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -65,6 +66,12 @@ public class BattleshipController implements Initializable {
     
     @FXML
     private Label playerColChoice ;
+    
+    @FXML
+    private TextField playerRow ;
+    
+    @FXML
+    private TextField playerCol ;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -98,6 +105,12 @@ public class BattleshipController implements Initializable {
         Platform.exit();
     	System.exit(0);
     }
+    
+    @FXML
+    private void Fire(ActionEvent event) {   	
+        playerMove();
+    }
+    
 
     private void initializeNewGame() {
         //BattleshipFactory battleshipFactory = new BattleshipFactory();
@@ -118,13 +131,13 @@ public class BattleshipController implements Initializable {
         gameRunning = false;
         enemyTurn = false;
         
-        //*****************FOR DESIGN ONLY NASOS EXP BOARD EXP
-        playerBoard = new Board(playerBoardClickHandler(), true);        
-        //************Problem!!!!!!        
-        //currentPlayerShip = playerBoard.getNextShip();
-        //********************       
-    
-        enemyBoard = new Board(enemyBoardClickHandler(), false);
+        //playerBoardClickHandler(),
+        playerBoard = new Board( true);        
+        enemyBoard = new Board( false);
+        placeShipsRandomly(playerBoard);
+        startGame();
+        //
+        
         
         //The area of BOARDS is enter visually here as a VBox
         enemyBoardArea.getChildren().add(enemyBoard);
@@ -133,7 +146,7 @@ public class BattleshipController implements Initializable {
     
     //Manual ship placement function 
     
-    private EventHandler<MouseEvent> playerBoardClickHandler() {
+    /*private EventHandler<MouseEvent> playerBoardClickHandler() {
         return event -> {
             if (gameRunning) {
                 return;
@@ -141,26 +154,11 @@ public class BattleshipController implements Initializable {
 
             Board.Field currentField = (Board.Field) event.getSource();
 
-            /*
-            if (event.getButton() == MouseButton.SECONDARY) {
-                currentPlayerShip.rotate();
-                return;
-            }
-            if (event.getButton() == MouseButton.PRIMARY) {
-                boolean shipPlacementSuccessful = playerBoard.setShip(currentPlayerShip, currentField);
-                if (shipPlacementSuccessful) {
-                	//************Problem!!!!!!
-                    currentPlayerShip = .getNextShip();
-                }
-            }*/
             placeShipsRandomly(playerBoard);
             
-            
-            if (true){//currentPlayerShip == null) {
-                startGame();
-            }
+            startGame();
         };
-    }
+    }*/
     
     
     //Not needed except ship placement
@@ -221,14 +219,23 @@ public class BattleshipController implements Initializable {
     
     
     //plays the game by letting you mouse click enemy board
-    private EventHandler<MouseEvent> enemyBoardClickHandler() {
+    //private EventHandler<MouseEvent> enemyBoardClickHandler() {
+    private void playerMove() {
     	//works when the game has started
-        return event -> {
-            if (!gameRunning) {
-                return;
-            }
-
-            Board.Field currentField = (Board.Field) event.getSource();
+       // return event -> {
+           // if (!gameRunning) {
+               // return;
+            //}
+            
+            //Board.Field currentField1 = (Board.Field) event.getSource();
+            
+            int row =  Integer.parseInt(playerRow.getText());
+            int col =  Integer.parseInt(playerCol.getText());
+            Board.Field currentField = enemyBoard.getField(row - 1, col - 1);
+            
+            //currentField.setRow() ;
+            //currentField.setCol()  ;
+            //= (Board.Field) event.getSource();
 
             if (currentField.wasShot()) {
                 return;
@@ -238,7 +245,7 @@ public class BattleshipController implements Initializable {
             enemyColChoice.setText(Integer.toString(currentField.getColumn()+1)); 
             //.setText(Integer.toString());
             boolean wasHit = enemyBoard.receiveShot(currentField);
-            enemyTurn = !wasHit;
+            
             enemyTurn = true;
 
             if (enemyBoard.getShipsCount() == 0) {
@@ -249,7 +256,7 @@ public class BattleshipController implements Initializable {
             if (enemyTurn && gameRunning) {
                 enemyMove();
             }
-        };
+        //};
     }
     
     //Automates enemy moves
@@ -289,10 +296,8 @@ public class BattleshipController implements Initializable {
         } while (enemyTurn);
     }
 
-    private void startGame() {
-    	
+    private void startGame() {    	
         placeShipsRandomly(enemyBoard);
-        //placeShipsRandomly(playerBoard);
         gameRunning = true;
     }
     
