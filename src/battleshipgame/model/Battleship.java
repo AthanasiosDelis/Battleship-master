@@ -5,51 +5,81 @@ package src.battleshipgame.model;
  */
 public class Battleship {
 
-    enum Ship {
-    	 TWO_DECKER(TWO_DECKER_SIZE),
-        THREE_DECKER(THREE_DECKER_SIZE), FOUR_DECKER(FOUR_DECKER_SIZE),FIVE_DECKER(FIVE_DECKER_SIZE);
-
-        private int size;
-        private String name;
-
-        Ship(int size) {
-            this.size = size;
-            this.name= "";
-        }
-
-        public int getSize() {
-            return size;
-        }
-    }
-
-    enum Deck {
-         TWO, THREE, FOUR, FIVE
-    }
-
-    private static final int FOUR_DECKER_SIZE  = 4;
-    private static final int FIVE_DECKER_SIZE  = 5;
-    private static final int TWO_DECKER_SIZE   = 2;
-    private static final int THREE_DECKER_SIZE = 3;
-
-    private int shipSize;
-    private boolean horizontalDirection = false;
+    private int shipSize;    
     private int health;
-    //private String name;
+    private int hitPoints;
+    private int shunkBonus;
+    private String name;
+    private boolean horizontalDirection = true;
 
-    Battleship(Ship ship) {
-        this.shipSize = ship.getSize();
-        this.health = ship.getSize();
-     //   this.name = "";
+    Battleship() {
+        this.shipSize = -1;
+        this.health = -1;
+        this.hitPoints = -1;
+        this.shunkBonus = -1;
+        this.name = "";
+    }
+    
+    Battleship(int size, int health, int point, int bonus, String name) {
+        this.shipSize = size;
+        this.health = health;
+        this.hitPoints = point;
+        this.shunkBonus = bonus;
+        this.name = name;
     }
 
     int getShipSize() {
         return shipSize;
     }
     
-   // public void setName(String name) {
-    //	this.name=name;
-    //}
+    int getHealth() {
+        return health;
+    }
+    
+    int getPoints() {
+        return hitPoints;
+    }
+    
+    int getBonus() {
+        return shunkBonus;
+    }
+    
+    String getName() {
+        return name;
+    }
+    
+    /*public void s  (int name) {
+    	this.name=name;
+    }*/
+    
+    public void setShipSize (int shipSize) {
+    	this.shipSize=shipSize;
+    }
+    
+    public void setHealth (int health) {
+    	this.health=health;
+    }
+    
+    public void setPoints (int hitPoints) {
+    	this.hitPoints=hitPoints;
+    }
+    
+    public void setBonus (int shunkBonus) {
+    	this.shunkBonus=shunkBonus;
+    }
+    
+    public void setName(String name) {
+    	this.name=name;
+    }
+    
+    boolean hasHorizontalDirection() {
+        return horizontalDirection;
+    }
 
+    public void rotate() {
+        horizontalDirection = !horizontalDirection;
+    }
+        
     void receiveShot() {
         if (isAlive()) {
             health--;
@@ -63,18 +93,10 @@ public class Battleship {
     boolean isAlive() {
         return health > 0;
     }
-
-    boolean hasHorizontalDirection() {
-        return horizontalDirection;
-    }
-
-    public void rotate() {
-        horizontalDirection = !horizontalDirection;
-    }
-
-    @Override
-    public String toString() {
-        return "(Size " + shipSize + " / Horizontal direction : " + horizontalDirection + ")";
+    
+    @Override    
+    public String toString () {
+        return "(Size " + shipSize + " / Horizontal direction : " + name + ")";
     }
 
 }

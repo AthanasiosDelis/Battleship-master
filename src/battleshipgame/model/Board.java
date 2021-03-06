@@ -27,7 +27,7 @@ public class Board extends Parent {
     private int percentage = 0;
     
     //MAybe here the exception!!!
-    private int shipsCount = 5;//getTotalShipsCount();
+    private int shipsCount = 1;//getTotalShipsCount();
     private boolean playerBoard;
     private VBox rows = new VBox();
     private List<Field> highlightedFields = new ArrayList<>();
