@@ -28,6 +28,14 @@ public class BattleshipFactory {
     {
     	Battleship carrier = new Battleship(5, 5, 350, 1000, "Carrier");
         ships.add(carrier);
+        Battleship battleship = new Battleship(4, 2, 250, 500, "Battleship");
+        ships.add(battleship);
+        Battleship cruiser = new Battleship(3, 3, 100, 250, "Cruiser");
+        ships.add(cruiser);
+        Battleship submarine = new Battleship(3, 3, 100, 0, "Submarine");
+        ships.add(submarine);
+        Battleship destroyer = new Battleship(2, 2, 50, 0, "Destroyer");
+        ships.add(destroyer);
         
         //addShips(Battleship.Deck.THREE);
         //addShips(Battleship.Deck.FOUR);

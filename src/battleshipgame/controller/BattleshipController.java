@@ -68,7 +68,7 @@ public class BattleshipController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //initializeNewGame();
+        initializeNewGame();
     }
 
     @FXML
@@ -88,8 +88,8 @@ public class BattleshipController implements Initializable {
     @FXML
     private void placeShipsRandomly(ActionEvent event) {
         if (!gameRunning) {
-        	System.exit(0);
-            //placeShipsRandomly(playerBoard);
+        	//System.exit(0);
+            placeShipsRandomly(playerBoard);
             startGame();
         }
     }
@@ -140,8 +140,8 @@ public class BattleshipController implements Initializable {
 
             Board.Field currentField = (Board.Field) event.getSource();
 
-            
-            /*if (event.getButton() == MouseButton.SECONDARY) {
+            ///*
+            if (event.getButton() == MouseButton.SECONDARY) {
                 currentPlayerShip.rotate();
                 return;
             }
@@ -150,11 +150,11 @@ public class BattleshipController implements Initializable {
                 if (shipPlacementSuccessful) {
                     currentPlayerShip = battleshipFactory.getNextShip();
                 }
-            }*/
-            placeShipsRandomly(playerBoard);
-            //currentPlayerShip = null;
+            }//*/
+            //placeShipsRandomly(playerBoard);
             
-            if (true){//currentPlayerShip == null) {
+            
+            if (currentPlayerShip == null){//true) {
                 startGame();
             }
         };
@@ -162,7 +162,7 @@ public class BattleshipController implements Initializable {
     
     
     //Not needed except ship placement
-    /*
+    
     private EventHandler<MouseEvent> playerBoardMouseEnteredHandler() {
         return event -> {
             if (gameRunning) {
@@ -182,7 +182,7 @@ public class BattleshipController implements Initializable {
             //Places ships
             playerBoard.removeShipPlacementHighlight();
         };
-    }*/
+    }
     
     
     //plays the game by letting you mouse click enemy board
