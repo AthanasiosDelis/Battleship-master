@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.battleshipgame.controller.BattleshipController">
+   <top>
+      <VBox prefHeight="400.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="650.0">
+               <children>
+                  <MenuBar>
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Application">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#startNewGame" text="Start" />
+                              <MenuItem mnemonicParsing="false" onAction="#startNewGame" text="Load" />
+                              <MenuItem mnemonicParsing="false" onAction="#exitGame" text="Exit" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Details">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Enemy Ships" />
+                              <MenuItem mnemonicParsing="false" text="Player Shots" />
+                              <MenuItem mnemonicParsing="false" text="Enemy Shots" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <HBox prefHeight="90.0" prefWidth="700.0">
+                     <children>
+                        <Label fx:id="playerShipsRemaining" prefHeight="80.0" prefWidth="100.0" text="playerShipsRemaining" />
+                        <Label fx:id="playerScore" prefHeight="80.0" prefWidth="100.0" text="Label" />
+                        <Label fx:id="playerPercentage" prefHeight="80.0" prefWidth="100.0" text="playerPercentage" />
+                        <Separator orientation="VERTICAL" prefHeight="90.0">
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </Separator>
+                        <Label fx:id="enemyShipsRemaining" prefHeight="80.0" prefWidth="100.0" text="enemyShipsRemaining" />
+                        <Label fx:id="enemyScore" prefHeight="80.0" prefWidth="100.0" text="Label" />
+                        <Label fx:id="enemyPercentage" prefHeight="80.0" prefWidth="100.0" text="enemyPercentage" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+              <HBox alignment="CENTER" prefHeight="400.0" prefWidth="700.0">
+                  <VBox fx:id="playerBoardArea" maxHeight="200.0" prefHeight="200.0" prefWidth="200.0">
+                      <Label alignment="CENTER" text="YOUR BATTLEFIELD" textAlignment="CENTER">
+                          <padding>
+                              <Insets bottom="5.0" />
+                          </padding>
+                          <font>
+                              <Font name="Tahoma" size="14.0" />
+                          </font>
+                      </Label>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="240.0">
+                      <padding>
+                          <Insets left="15.0" right="15.0" />
+                      </padding>
+                  </Separator>
+                  <VBox fx:id="enemyBoardArea" maxHeight="200.0" prefHeight="200.0" prefWidth="200.0">
+                      <Label alignment="CENTER" text="ENEMY'S BATTLEFIELD" textAlignment="CENTER">
+                          <padding>
+                              <Insets bottom="5.0" />
+                          </padding>
+                          <font>
+                              <Font name="Tahoma" size="14.0" />
+                          </font>
+                      </Label>
+                  </VBox>
+                  <padding>
+                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+              </HBox>
+               <HBox alignment="CENTER_LEFT" prefWidth="700.0" spacing="10">
+                   <padding>
+                       <Insets bottom="20" right="25" />
+                   </padding>
+               <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="350.0" spacing="10">
+                  <padding>
+                     <Insets bottom="20" left="10" />
+                  </padding>
+                  <children>
+                     <Label fx:id="playerRowChoice" text="PLAYER_ROW">
+                        <font>
+                           <Font name="Tahoma bold" size="20.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="playerColChoice" text="PLAYER_COL">
+                        <font>
+                           <Font name="Tahoma bold" size="20.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               <Separator orientation="VERTICAL" prefHeight="200.0" />
+               <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="350.0" spacing="10">
+                  <padding>
+                     <Insets bottom="20" left="10" />
+                  </padding>
+                  <children>
+                     <Label fx:id="enemyRowChoice" text="ENEMY_ROW">
+                        <font>
+                           <Font name="Tahoma bold" size="20.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="enemyColChoice" text="ENEMY_COL">
+                        <font>
+                           <Font name="Tahoma bold" size="20.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               </HBox>
+         </children>
+      </VBox>
+   </top>
+   <bottom>
+      <Label fx:id="gameResult" text="Label" BorderPane.alignment="CENTER" />
+   </bottom>
+
+</BorderPane>
