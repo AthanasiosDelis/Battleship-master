@@ -28,23 +28,23 @@ public class Battleship {
         this.name = name;
     }
 
-    int getShipSize() {
+    public int getShipSize() {
         return shipSize;
     }
     
-    int getHealth() {
+    public int getHealth() {
         return health;
     }
     
-    int getPoints() {
+    public int getPoints() {
         return hitPoints;
     }
     
-    int getBonus() {
+    public int getBonus() {
         return shunkBonus;
     }
     
-    String getName() {
+    public String getName() {
         return name;
     }
     
@@ -83,6 +83,7 @@ public class Battleship {
     public void receiveShot() {
         if (isAlive()) {
             health--;
+            System.out.println("Name: " + this.getName() + " Health: " + health);
         }
     }
     

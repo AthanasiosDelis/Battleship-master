@@ -29,22 +29,22 @@ public class Board extends Parent {
     private static final int COL = 10;
     
     public Battleship carrier = new Battleship(5, 5, 350, 1000, "Carrier");
-   // public Battleship battleship = new Battleship(4, 2, 250, 500, "Battleship");
-   // public Battleship cruiser = new Battleship(3, 3, 100, 250, "Cruiser");
-   // public Battleship submarine = new Battleship(3, 3, 100, 0, "Submarine");
-  //  public Battleship destroyer = new Battleship(2, 2, 50, 0, "Destroyer");
+    public Battleship battleship = new Battleship(4, 4, 250, 500, "Battleship");
+    public Battleship cruiser = new Battleship(3, 3, 100, 250, "Cruiser");
+    public Battleship submarine = new Battleship(3, 3, 100, 0, "Submarine");
+    public Battleship destroyer = new Battleship(2, 2, 50, 0, "Destroyer");
     
-    public static LinkedList<Battleship> ships = new LinkedList<>();
+    public LinkedList<Battleship> ships = new LinkedList<>();
 
     {    	
         ships.add(carrier);        
-        //ships.add(battleship);        
-        //ships.add(cruiser);        
-        //ships.add(submarine);        
-       // ships.add(destroyer);        
+        ships.add(battleship);        
+        ships.add(cruiser);        
+        ships.add(submarine);        
+        ships.add(destroyer);        
     }
 
-    static int getTotalShipsCount() {
+    public int getTotalShipsCount() {
     	return ships.size();
     }
 
@@ -58,7 +58,7 @@ public class Board extends Parent {
     private int score = 0;
     
     //MAybe here the exception!!!
-    private int shipsCount = 1;//getTotalShipsCount();
+    private int shipsCount = getTotalShipsCount();
     
     private int shipsAlive = 1;
     private int shipsWounde = 0;
@@ -83,24 +83,6 @@ public class Board extends Parent {
         }
         getChildren().add(rows);
     }
-    //molis ayto den xreiazetai o ypoloipos kwdikas einai antigra3imos
-    /*
-    public Board(EventHandler<? super MouseEvent> clickHandler, EventHandler<? super MouseEvent> mouseEnteredHandler,
-                 EventHandler<? super MouseEvent> mouseExitedHandler, boolean playerBoard) {
-        this.playerBoard = playerBoard;
-        for (int row = 0; row < ROW; row++) {
-            HBox currentRow = new HBox();
-            for (int col = 0; col < COL; col++) {
-                Field field = new Field(row, col);
-                field.setOnMouseClicked(clickHandler);
-                field.setOnMouseEntered(mouseEnteredHandler);
-                field.setOnMouseExited(mouseExitedHandler);
-                currentRow.getChildren().add(field);
-            }
-            rows.getChildren().add(currentRow);
-        }
-        getChildren().add(rows);
-    }*/
 
     //PUTS SHIP IN ITS PLACE
     public boolean setShip(Battleship ship, Field startField) {
@@ -162,9 +144,7 @@ public class Board extends Parent {
             return;
         }
         
-        //System.out.println(highlightedFields.size());
-        //sleep();        sleep();        sleep();        sleep();        sleep();
-        
+           
         
         int shipSize = ship.getShipSize();
 
@@ -238,11 +218,11 @@ public class Board extends Parent {
         return shipsCount;
     }
    
-    //ÈÅËÅÉ ÁÎÉÏËÏÃÇÓÇ ÔÏ ÐÑÙÉ Ç ÁÍÁÊÇ ÃÉÁ ×ÑÏÍÏ
+    
     public boolean receiveShot(Field field) {
-        if (!playerBoard) {
-            sleep();
-        }
+        //if (!playerBoard) {
+          //  sleep();
+        //}
              
         return field.shoot();
     }
@@ -334,7 +314,7 @@ public class Board extends Parent {
                 oneGoodShot++;
                 score = score + battleship.getPoints();
                 percentage = (oneGoodShot * 100) / (oneMoreShot + oneGoodShot);
-                battleship.setHealth(battleship.getHealth()-1);
+                
                                          
                 if (!battleship.isAlive()) {
                 	score = score + battleship.getBonus();

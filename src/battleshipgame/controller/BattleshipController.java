@@ -33,7 +33,7 @@ public class BattleshipController implements Initializable {
     private boolean enemyTurn;
     
     private static int turn = 0;
-    private static int lastTurn = 7;
+    private static int lastTurn = 40;
 
     private Battleship currentPlayerShip;
 
@@ -90,16 +90,28 @@ public class BattleshipController implements Initializable {
 
     @FXML
     private void load(ActionEvent event) {
-        if (!gameRunning) {
-        	System.exit(0);
+        if (gameRunning) {
+        	System.out.println(enemyShipState(enemyBoard.carrier) + '\n'
+        			+ enemyShipState(enemyBoard.battleship) + '\n'
+        			+ enemyShipState(enemyBoard.cruiser) + '\n'
+        			+ enemyShipState(enemyBoard.submarine) + '\n'
+        			+ enemyShipState(enemyBoard.destroyer) + '\n'        			
+        			);
             //placeShipsRandomly(playerBoard);
+        	
+            /*	board.placeShipOnBoardRandomly(board.carrier);
+        	board.placeShipOnBoardRandomly(board.battleship);
+        	board.placeShipOnBoardRandomly(board.cruiser);
+        	board.placeShipOnBoardRandomly(board.submarine);
+        	board.placeShipOnBoardRandomly(board.destroyer);
+        }*/
             //startGame();
         }
     }
     
     
     //@FXML
-    //private int enemyShips(ActionEvent event) {
+    //private void enemyShips(ActionEvent event) {
     //    return eneyShipsCount();
     //}
 
@@ -151,41 +163,15 @@ public class BattleshipController implements Initializable {
         enemyBoardArea.getChildren().add(enemyBoard);
         playerBoardArea.getChildren().add(playerBoard);
     }
+        //Manual ship placement function 
     
-    //Manual ship placement function 
-    
-    /*private EventHandler<MouseEvent> playerBoardClickHandler() {
-        return event -> {
-            if (gameRunning) {
-                return;
-            }
 
-            Board.Field currentField = (Board.Field) event.getSource();
-
-            placeShipsRandomly(playerBoard);
-            
-            startGame();
-        };
-    }*/
-    
-    
-    //Not needed except ship placement
-    
-   /* private EventHandler<MouseEvent> playerBoardMouseEnteredHandler() {
-        return event -> {
-            if (gameRunning) {
-                return;
-            }
-            Board.Field currentField = (Board.Field) event.getSource();
-            playerBoard.highlightShipPlacement(currentPlayerShip, currentField);
-        };
-    }*/
     
     
     //getScore()
     
     //6bi
-   private static int enemyShipState (Board board){
+   private static int eneyShipsCount (Board board){
     	int count=0;
     	if(board.carrier.isAlive()) {
     		count++;
@@ -205,9 +191,20 @@ public class BattleshipController implements Initializable {
     	
     	return count;
    }
+   
+   private static String enemyShipState(Battleship ship){
+	   if(!ship.isAlive()) {
+		   return ship.getName() + ": DEAD";
+    	}else if(ship.isWounded()) {
+    		return ship.getName() + ": WOUNDED";
+    	}else {
+    		return ship.getName() + ": UNHIT";
+    	}
+   }
     	 
     	 
-    	 
+    	
+   
      /*	board.placeShipOnBoardRandomly(board.carrier);
     	board.placeShipOnBoardRandomly(board.battleship);
     	board.placeShipOnBoardRandomly(board.cruiser);
@@ -290,8 +287,8 @@ public class BattleshipController implements Initializable {
         
         turn++;
         if( turn == lastTurn) {
-        	int playerScor = playerBoard.getScore();
-        	int enemyScor = enemyBoard.getScore() ;
+        	int enemyScor = playerBoard.getScore();
+        	int playerScor = enemyBoard.getScore() ;
         	if(playerScor > enemyScor) {
         		gameRunning = false;
         		gameResult.setText("You won the game!");
@@ -315,9 +312,9 @@ public class BattleshipController implements Initializable {
     private void placeShipsRandomly(Board board) {
     	
     	board.placeShipOnBoardRandomly(board.carrier);
-    	//board.placeShipOnBoardRandomly(board.battleship);
-    	//board.placeShipOnBoardRandomly(board.cruiser);
-    	//board.placeShipOnBoardRandomly(board.submarine);
-    	//board.placeShipOnBoardRandomly(board.destroyer);
+    	board.placeShipOnBoardRandomly(board.battleship);
+    	board.placeShipOnBoardRandomly(board.cruiser);
+    	board.placeShipOnBoardRandomly(board.submarine);
+    	board.placeShipOnBoardRandomly(board.destroyer);
     }
 }
