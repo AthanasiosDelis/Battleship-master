@@ -80,17 +80,17 @@ public class Battleship {
         horizontalDirection = !horizontalDirection;
     }
         
-    void receiveShot() {
+    public void receiveShot() {
         if (isAlive()) {
             health--;
         }
     }
     
-    boolean isWounded() {
+    public boolean isWounded() {
     	return ((health!=shipSize) && (health > 0));
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return health > 0;
     }
     

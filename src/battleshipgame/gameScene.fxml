@@ -22,7 +22,7 @@
                       <Menu mnemonicParsing="false" text="Application">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#startNewGame" text="Start" />
-                              <MenuItem mnemonicParsing="false" onAction="#startNewGame" text="Load" />
+                              <MenuItem mnemonicParsing="false" onAction="#load" text="Load" />
                               <MenuItem mnemonicParsing="false" onAction="#exitGame" text="Exit" />
                         </items>
                       </Menu>

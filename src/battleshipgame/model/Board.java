@@ -11,27 +11,64 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.LinkedList;
 
-import static src.battleshipgame.model.BattleshipFactory.getTotalShipsCount;
+//import static src.battleshipgame.model.BattleshipFactory.getTotalShipsCount;
 
 /**
  * Created by yanair on 05.05.17.
  */
 public class Board extends Parent {
+	
+	
+    //MUst change
+    //5 add ships 1 per type
+    
 
     private static final int ROW = 10;
     private static final int COL = 10;
     
+    public Battleship carrier = new Battleship(5, 5, 350, 1000, "Carrier");
+   // public Battleship battleship = new Battleship(4, 2, 250, 500, "Battleship");
+   // public Battleship cruiser = new Battleship(3, 3, 100, 250, "Cruiser");
+   // public Battleship submarine = new Battleship(3, 3, 100, 0, "Submarine");
+  //  public Battleship destroyer = new Battleship(2, 2, 50, 0, "Destroyer");
+    
+    public static LinkedList<Battleship> ships = new LinkedList<>();
+
+    {    	
+        ships.add(carrier);        
+        //ships.add(battleship);        
+        //ships.add(cruiser);        
+        //ships.add(submarine);        
+       // ships.add(destroyer);        
+    }
+
+    static int getTotalShipsCount() {
+    	return ships.size();
+    }
+
+    public Battleship getNextShip() {
+        return ships.pollFirst(); // returns null for empty list
+    } 
+    
     private int oneMoreShot = 0;
     private int oneGoodShot = 0;
     private int percentage = 0;
+    private int score = 0;
     
     //MAybe here the exception!!!
-    private int shipsCount = 5;//getTotalShipsCount();
+    private int shipsCount = 1;//getTotalShipsCount();
+    
+    private int shipsAlive = 1;
+    private int shipsWounde = 0;
+    private int shipsDead = 0;
     private boolean playerBoard;
     private VBox rows = new VBox();
     private List<Field> highlightedFields = new ArrayList<>();
-
+    
+    
+    //Makes the tableaux
     public Board(EventHandler<? super MouseEvent> clickHandler, boolean playerBoard) {
         this.playerBoard = playerBoard;
         for (int row = 0; row < ROW; row++) {
@@ -67,7 +104,9 @@ public class Board extends Parent {
     //PUTS SHIP IN ITS PLACE
     public boolean setShip(Battleship ship, Field startField) {
         int shipSize = ship.getShipSize();
-
+        
+        startField.setBattleship(ship);
+        
         if (!canSetShip(ship, startField)) {
             return false;
         }
@@ -188,6 +227,10 @@ public class Board extends Parent {
         }
     }
     
+    public int getScore(){
+    	return score;
+    }
+    
     //Debugging func
     public int getShoots() {
     	return oneMoreShot;
@@ -218,8 +261,13 @@ public class Board extends Parent {
             super(FIELD_SIZE, FIELD_SIZE);
             this.row = row;
             this.column = column;
+            
             setFill(Color.WHITE);
             setStroke(Color.DARKGRAY);
+        }
+        
+        public void setBattleship(Battleship battleship) {
+        	this.battleship=battleship;
         }
 
         public int getRow() {
@@ -272,10 +320,14 @@ public class Board extends Parent {
                 setFill(Color.ORANGERED);
                 
                 oneGoodShot++;
+                score = score + battleship.getPoints();
                 percentage = (oneGoodShot * 100) / (oneMoreShot + oneGoodShot);
-
+                battleship.setHealth(battleship.getHealth()-1);
+                                         
                 if (!battleship.isAlive()) {
+                	score = score + battleship.getBonus();
                     shipsCount--;
+                    
                 }
                 return true;
             }
