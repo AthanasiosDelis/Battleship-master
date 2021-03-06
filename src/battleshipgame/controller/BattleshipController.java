@@ -31,6 +31,9 @@ public class BattleshipController implements Initializable {
 
     private boolean gameRunning;
     private boolean enemyTurn;
+    
+    private static int turn = 0;
+    private static int lastTurn = 7;
 
     private Battleship currentPlayerShip;
 
@@ -107,7 +110,12 @@ public class BattleshipController implements Initializable {
     }
     
     @FXML
-    private void Fire(ActionEvent event) {   	
+    private void Fire(ActionEvent event) { 
+    	boolean t = turn < lastTurn ;
+    	boolean v =t && gameRunning ;
+    	if ( !gameRunning || !v ) {  		
+    		return ;
+    	}
         playerMove();
     }
     
@@ -207,30 +215,15 @@ public class BattleshipController implements Initializable {
     	board.placeShipOnBoardRandomly(board.destroyer);
     }*/
 
-    /*private EventHandler<MouseEvent> playerBoardMouseExitedHandler() {
-        return event -> {
-            if (gameRunning) {
-                return;
-            }
-            //Places ships
-            playerBoard.removeShipPlacementHighlight();
-        };
-    }*/
-    
-    
-    //plays the game by letting you mouse click enemy board
-    //private EventHandler<MouseEvent> enemyBoardClickHandler() {
+
     private void playerMove() {
-    	//works when the game has started
-       // return event -> {
-           // if (!gameRunning) {
-               // return;
-            //}
+    	
+    		Random random = new Random();
+    		int row = random.nextInt(10) + 1;
+    		int col = random.nextInt(10) + 1;
             
-            //Board.Field currentField1 = (Board.Field) event.getSource();
-            
-            int row =  Integer.parseInt(playerRow.getText());
-            int col =  Integer.parseInt(playerCol.getText());
+    		//int row =  Integer.parseInt(playerRow.getText());
+            //int col =  Integer.parseInt(playerCol.getText());
             Board.Field currentField = enemyBoard.getField(row - 1, col - 1);
             
             //currentField.setRow() ;
@@ -246,14 +239,14 @@ public class BattleshipController implements Initializable {
             //.setText(Integer.toString());
             boolean wasHit = enemyBoard.receiveShot(currentField);
             
-            enemyTurn = true;
+            
 
             if (enemyBoard.getShipsCount() == 0) {
                 gameRunning = false;
                 gameResult.setText("You won the game!");
             }
 
-            if (enemyTurn && gameRunning) {
+            if (gameRunning) {
                 enemyMove();
             }
         //};
@@ -294,6 +287,22 @@ public class BattleshipController implements Initializable {
             }
 
         } while (enemyTurn);
+        
+        turn++;
+        if( turn == lastTurn) {
+        	int playerScor = playerBoard.getScore();
+        	int enemyScor = enemyBoard.getScore() ;
+        	if(playerScor > enemyScor) {
+        		gameRunning = false;
+        		gameResult.setText("You won the game!");
+        	}else if(playerScor <= enemyScor) {
+        		gameRunning = false;
+        		gameResult.setText("You lost :(");
+        		
+        	}
+        	gameRunning = false;        	        	        	
+        }
+        	
     }
 
     private void startGame() {    	
