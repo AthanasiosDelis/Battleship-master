@@ -111,7 +111,7 @@ public class Board extends Parent {
         return true;
     }
     
-    //****************THE PLACE FOR THE 3 EXCEPTIONS
+    //****************THE PLACE FOR THE 2 EXCEPTIONS
     private boolean canSetShip(Battleship ship, Field startField) { // todo add logic for adjacent fields
         int shipSize = ship.getShipSize();
 
@@ -208,7 +208,7 @@ public class Board extends Parent {
     }
 
 
-    
+    //MAy be used maybe not
     //STOP TIME FOR SOME TIME GOOGLE HOW MUCH
     private void sleep() {
         try {
@@ -243,7 +243,7 @@ public class Board extends Parent {
              
         return field.shoot();
     }
-    //MUST BE COMPARABLE WITH LOCATION
+    //THE MAIN DESIGN
     public class Field extends Rectangle {
 
         private static final int FIELD_SIZE = 30;

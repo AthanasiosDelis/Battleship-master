@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -130,13 +131,34 @@ public class BattleshipController implements Initializable {
     }
     
     @FXML
+    
     private void shipRemaining(ActionEvent event) {
     	String remaining = enemyShipState(enemyBoard.carrier) + '\n'
     			+ enemyShipState(enemyBoard.battleship) + '\n'
     			+ enemyShipState(enemyBoard.cruiser) + '\n'
     			+ enemyShipState(enemyBoard.submarine) + '\n'
     			+ enemyShipState(enemyBoard.destroyer) + '\n';        			
-    	shipRemaining( e -> PopUpWindow.display(remaining,"Vivi Rocks ?") );    	
+    	PopUpWindow.display("6bi:Enemy Ships",remaining) ;    	
+    }
+    
+    @FXML
+    
+    private void playerFiveShots(ActionEvent event) {
+    	String stats ="";
+    	for(String s:playerStats) {  		
+    		stats +=  s + '\n';
+    	}       			
+    	PopUpWindow.display("6bii Player Shots",stats) ;    	
+    }
+    
+    @FXML
+    
+    private void enemyFiveShots(ActionEvent event) {
+    	String stats ="";
+    	for(String s:enemyStats) {  		
+    		stats +=  s + '\n';
+    	}       			
+    	PopUpWindow.display("6bii Player Shots",stats) ;    			    	 	
     }
     
     @FXML
