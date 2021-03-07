@@ -7,6 +7,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import src.battleshipgame.OverlapTilesException;
+import src.battleshipgame.OversizeException;
+import src.battleshipgame.InvalidCountExeception;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +58,11 @@ public class Board extends Parent {
     private int oneMoreShot = 0;
     private int oneGoodShot = 0;
     private int percentage = 0;
-    private int score = 0;
+    private int score = 0 ;
     
     //MAybe here the exception!!!
+    
+    
     private int shipsCount = getTotalShipsCount();
     
     private int shipsAlive = 1;
@@ -112,11 +117,17 @@ public class Board extends Parent {
 
         // check that there's enough space for ship
         if (ship.hasHorizontalDirection()) {
-            if (startField.getColumn() + shipSize > COL) {
+        	try {
+        		if (startField.getColumn() + shipSize > COL) throw new OversizeException();
+        	} catch (OversizeException e) {
+        		System.out.println("OverSize");
                 return false;
             }
         } else {
-            if (startField.getRow() + shipSize > COL) {
+        	try {
+        		if (startField.getRow() + shipSize > COL) throw new OversizeException();
+        	} catch (OversizeException e){
+        		System.out.println("OverSize");
                 return false;
             }
         }
@@ -125,12 +136,18 @@ public class Board extends Parent {
         for (int i = 0; i < shipSize; i++) {
             if (ship.hasHorizontalDirection()) {
                 Field currentField = getField(startField.getRow(), startField.getColumn() + i);
-                if (currentField.isOccupied()) {
-                    return false;
-                }
+                try{
+                	if (currentField.isOccupied()) throw new OverlapTilesException();                	
+                }catch (OverlapTilesException e){
+                	System.out.println("Overlap");
+                	return false;
+                }                
             } else {
                 Field currentField = getField(startField.getRow() + i, startField.getColumn());
-                if (currentField.isOccupied()) {
+                try{
+                	if (currentField.isOccupied()) throw new OverlapTilesException();
+                }catch (OverlapTilesException e){
+                	System.out.println("Overlap");
                     return false;
                 }
             }
@@ -253,6 +270,9 @@ public class Board extends Parent {
         	this.battleship=battleship;
         }
         
+        public String getName(){
+        	return this.battleship.getName();
+        }
         
         public void setRow(int row) {
             this.row = row;

@@ -30,7 +30,7 @@
                       </Menu>
                       <Menu mnemonicParsing="false" text="Details">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="Enemy Ships" />
+                          <MenuItem mnemonicParsing="false" onAction="#shipRemaining" text="Enemy Ships" />
                               <MenuItem mnemonicParsing="false" text="Player Shots" />
                               <MenuItem mnemonicParsing="false" text="Enemy Shots" />
                         </items>
@@ -40,7 +40,7 @@
                   <HBox prefHeight="90.0" prefWidth="700.0">
                      <children>
                         <Label fx:id="playerShipsRemaining" prefHeight="80.0" prefWidth="100.0" text="playerShipsRemaining" />
-                        <Label fx:id="playerScore" prefHeight="80.0" prefWidth="100.0" text="Label" />
+                        <Label fx:id="playerScore" prefHeight="80.0" prefWidth="100.0" text="playerScore" />
                         <Label fx:id="playerPercentage" prefHeight="80.0" prefWidth="100.0" text="playerPercentage" />
                         <Separator orientation="VERTICAL" prefHeight="90.0">
                            <padding>
@@ -48,7 +48,7 @@
                            </padding>
                         </Separator>
                         <Label fx:id="enemyShipsRemaining" prefHeight="80.0" prefWidth="100.0" text="enemyShipsRemaining" />
-                        <Label fx:id="enemyScore" prefHeight="80.0" prefWidth="100.0" text="Label" />
+                        <Label fx:id="enemyScore" prefHeight="80.0" prefWidth="100.0" text="enemyScore" />
                         <Label fx:id="enemyPercentage" prefHeight="80.0" prefWidth="100.0" text="enemyPercentage" />
                      </children>
                   </HBox>

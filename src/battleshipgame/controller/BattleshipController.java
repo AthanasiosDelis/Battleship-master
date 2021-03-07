@@ -1,5 +1,7 @@
 package src.battleshipgame.controller;
 
+import src.battleshipgame.InvalidCountExeception;
+import src.battleshipgame.PopUpWindow;
 import src.battleshipgame.model.Battleship;
 import src.battleshipgame.model.Board.Field;
 import src.battleshipgame.model.Board;
@@ -15,6 +17,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -32,11 +36,14 @@ public class BattleshipController implements Initializable {
     private boolean gameRunning;
     private boolean enemyTurn;
     
-    private static int turn = 0;
-    private static int lastTurn = 40;
+    private static int turn = 1;
+    private static int lastTurn = 41;
 
     private Battleship currentPlayerShip;
-
+    
+    private ArrayList<String> enemyStats = new ArrayList<String>();
+    private ArrayList<String> playerStats = new ArrayList<String>();
+    
     @FXML
     private Label gameResult;
     
@@ -85,6 +92,7 @@ public class BattleshipController implements Initializable {
     private void startNewGame(ActionEvent event) {
         enemyBoardArea.getChildren().remove(enemyBoard);
         playerBoardArea.getChildren().remove(playerBoard);
+        turn = 1;
         initializeNewGame();
     }
 
@@ -119,6 +127,16 @@ public class BattleshipController implements Initializable {
     private void exitGame(ActionEvent event) {
         Platform.exit();
     	System.exit(0);
+    }
+    
+    @FXML
+    private void shipRemaining(ActionEvent event) {
+    	String remaining = enemyShipState(enemyBoard.carrier) + '\n'
+    			+ enemyShipState(enemyBoard.battleship) + '\n'
+    			+ enemyShipState(enemyBoard.cruiser) + '\n'
+    			+ enemyShipState(enemyBoard.submarine) + '\n'
+    			+ enemyShipState(enemyBoard.destroyer) + '\n';        			
+    	shipRemaining( e -> PopUpWindow.display(remaining,"Vivi Rocks ?") );    	
     }
     
     @FXML
@@ -157,7 +175,19 @@ public class BattleshipController implements Initializable {
         placeShipsRandomly(playerBoard);
         startGame();
         //
+        try {
+        	if(playerBoard.getTotalShipsCount() > 5 ) throw new InvalidCountExeception();
+        } catch(InvalidCountExeception e ) {
+        	System.out.println("InvalidCount");
+        	System.exit(0);
+        }
         
+        try {
+        	if(enemyBoard.getTotalShipsCount() > 5 ) throw new InvalidCountExeception();
+        } catch(InvalidCountExeception e ) {
+        	System.out.println("InvalidCount");
+        	System.exit(0);
+        }
         
         //The area of BOARDS is enter visually here as a VBox
         enemyBoardArea.getChildren().add(enemyBoard);
@@ -237,6 +267,26 @@ public class BattleshipController implements Initializable {
             boolean wasHit = enemyBoard.receiveShot(currentField);
             
             
+            //ArrayList<String> statsTurn = new ArrayList<String>();
+            //statsTurn.add("Row: " + Integer.toString(row) + '\n');
+            //statsTurn.add("Col: " + Integer.toString(col) + '\n');
+            //statsTurn.add("Hit: " + Boolean.toString(wasHit) + '\n');
+            
+            if(playerStats.size() > 4) {
+            	playerStats.remove(0);
+            }
+            
+            String statsTurn = "Turn: " + Integer.toString(turn) + '\n';
+            statsTurn += "Row: " + Integer.toString(row) + '\n';
+            statsTurn += "Col: " + Integer.toString(col) + '\n';
+            statsTurn += "Hit: " + Boolean.toString(wasHit) + '\n';		
+            		
+            if(wasHit) {
+            	//statsTurn.add("Hit: " + field.getName() + '\n');
+            	statsTurn += "Name: " + currentField.getName() + '\n' ;
+            }
+            playerStats.add(statsTurn);
+            System.out.println(playerStats);
 
             if (enemyBoard.getShipsCount() == 0) {
                 gameRunning = false;
@@ -267,7 +317,7 @@ public class BattleshipController implements Initializable {
                 break;
             }
             
-            enemyTurn = playerBoard.receiveShot(field);
+            boolean goodShot = playerBoard.receiveShot(field);
             enemyTurn = false;
             playerShipsRemaining.setText(Integer.toString(playerBoard.getShipsCount()));
             enemyShipsRemaining.setText(Integer.toString(enemyBoard.getShipsCount()));
@@ -276,13 +326,42 @@ public class BattleshipController implements Initializable {
             enemyScore.setText(Integer.toString(enemyBoard.getScore()));
             playerScore.setText(Integer.toString(playerBoard.getScore()));
             
+            if(enemyStats.size() > 4) {
+            	enemyStats.remove(0);
+            }
+            
+            String statsTurn = "Turn: " + Integer.toString(turn) + '\n';;
+            
+            statsTurn += "Row: " + Integer.toString(row + 1) + '\n';
+            statsTurn += "Col: " + Integer.toString(col + 1) + '\n';
+            statsTurn += "Hit: " + Boolean.toString(goodShot) + '\n';		
+            		
+            if(goodShot) {
+            	//statsTurn.add("Hit: " + field.getName() + '\n');
+            	statsTurn += "Name: " + field.getName() + '\n' ;
+            }
+            //ArrayList<String> statsTurn = new ArrayList<String>();
+            //statsTurn.add("Row: " + Integer.toString(row) + '\n');
+            //statsTurn.add("Col: " + Integer.toString(col) + '\n');
+            //statsTurn.add("Hit: " + Boolean.toString(goodShot) + '\n');
+            if(goodShot) {
+            	statsTurn += "Hit: " + field.getName() + '\n';
+            }
+            enemyStats.add(statsTurn);
+            System.out.println(enemyStats) ;
+            //for(int i=0; i<enemyStats.size(); i++) {
+            	//for(int j=0; j<enemyStats.get(i).size(); i++ )
+            	//System.out.println(enemyStats.get(i).get(j)) ;
+            //}
             
             
             if (playerBoard.getShipsCount() == 0) {
                 gameRunning = false;
                 gameResult.setText("You lost :(");
             }
-
+            
+            
+            
         } while (enemyTurn);
         
         turn++;
