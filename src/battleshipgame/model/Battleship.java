@@ -83,7 +83,7 @@ public class Battleship {
     public void receiveShot() {
         if (isAlive()) {
             health--;
-            System.out.println("Name: " + this.getName() + " Health: " + health);
+            //System.out.println("Name: " + this.getName() + " Health: " + health);
         }
     }
     

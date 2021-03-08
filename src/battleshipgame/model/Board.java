@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import src.battleshipgame.OverlapTilesException;
 import src.battleshipgame.OversizeException;
+import src.battleshipgame.AdjacentTilesException;
 import src.battleshipgame.InvalidCountExeception;
 
 import java.util.ArrayList;
@@ -103,9 +104,43 @@ public class Board extends Parent {
             if (ship.hasHorizontalDirection()) {
                 Field occupiedField = getField(startField.getRow(), startField.getColumn() + i);
                 occupiedField.setShip(ship);
+                if (startField.getRow()<9) {
+                	Field occupiedField1 = getField(startField.getRow()+1, startField.getColumn() + i);
+                	occupiedField1.setBusy(true);
+                }
+                if (startField.getRow()>0) {
+                	Field occupiedField2 = getField(startField.getRow()-1, startField.getColumn() + i);
+                	occupiedField2.setBusy(true);
+                }
+                if (startField.getColumn()>0) {
+                	Field occupiedField3 = getField(startField.getRow(), startField.getColumn() - 1);
+                	occupiedField3.setBusy(true);
+                }
+                if (startField.getColumn() + shipSize <9) {
+                	Field occupiedField4 = getField(startField.getRow(), startField.getColumn() + shipSize);
+                	occupiedField4.setBusy(true);
+                }
+                
+                
             } else {
                 Field occupiedField = getField(startField.getRow() + i, startField.getColumn());
                 occupiedField.setShip(ship);
+                if (startField.getColumn()<9) {
+                	Field occupiedField1 = getField(startField.getRow() + i, startField.getColumn() +1);
+                	occupiedField1.setBusy(true);
+                }
+                if (startField.getColumn()>0) {
+                	Field occupiedField2 = getField(startField.getRow() + i, startField.getColumn() -1);
+                	occupiedField2.setBusy(true);
+                }
+                if (startField.getRow()>0) {
+                	Field occupiedField3 = getField(startField.getRow() - 1, startField.getColumn() );
+                	occupiedField3.setBusy(true);
+                }
+                if (startField.getRow() + shipSize <9) {
+                	Field occupiedField4 = getField(startField.getRow() + shipSize, startField.getColumn() );
+                	occupiedField4.setBusy(true);
+                }
             }
         }
         return true;
@@ -148,6 +183,27 @@ public class Board extends Parent {
                 	if (currentField.isOccupied()) throw new OverlapTilesException();
                 }catch (OverlapTilesException e){
                 	System.out.println("Overlap");
+                    return false;
+                }
+            }
+        }
+        
+     // check that fields are not busy
+        for (int i = 0; i < shipSize; i++) {
+            if (ship.hasHorizontalDirection()) {
+                Field currentField = getField(startField.getRow(), startField.getColumn() + i);
+                try{
+                	if (currentField.isBusy()) throw new AdjacentTilesException();                	
+                }catch (AdjacentTilesException e){
+                	System.out.println("Adjacent");
+                	return false;
+                }                
+            } else {
+                Field currentField = getField(startField.getRow() + i, startField.getColumn());
+                try{
+                	if (currentField.isBusy()) throw new AdjacentTilesException();
+                }catch (AdjacentTilesException e){
+                	System.out.println("Adjacent");
                     return false;
                 }
             }
@@ -195,6 +251,27 @@ public class Board extends Parent {
 
             if (random.nextBoolean()) {
                 battleship.rotate();
+            }
+
+            shipPlaced = setShip(battleship, start);
+        } while (!shipPlaced);
+    }
+    
+    public void placeShipOnBoardLoad(Battleship battleship, int rowShip ,int colShip ,int direction) {
+        boolean shipPlaced;
+        Random random = new Random();
+
+        do {
+            int row = rowShip -1;
+            int col = colShip -1;
+            Field start = new Field(row, col);
+            
+            if(direction == 1) {
+            	battleship.rotate();
+            }
+
+            if(direction == 2) {
+            	battleship.rotate();
             }
 
             shipPlaced = setShip(battleship, start);
@@ -253,6 +330,7 @@ public class Board extends Parent {
 
         private boolean wasShot = false;
         private boolean isOccupied = false;
+        private boolean isBusy = false;
 
         private Battleship battleship;
         
@@ -281,6 +359,12 @@ public class Board extends Parent {
         public void setCol(int col) {
             this.column = col;
         }
+        
+        public void setBusy(Boolean busy) {
+            this.isBusy = busy;
+            //setFill(Color.GREEN);
+            //setStroke(Color.DARKGRAY);            
+        }
 
         public int getRow() {
             return row;
@@ -289,6 +373,15 @@ public class Board extends Parent {
         public int getColumn() {
             return column;
         }
+        
+        public boolean getDirection() {
+            return this.battleship.hasHorizontalDirection();
+        }
+        
+        
+        public int getLength() {
+            return this.battleship.getShipSize();
+        }
 
         public boolean wasShot() {
             return wasShot;
@@ -296,6 +389,10 @@ public class Board extends Parent {
 
         private boolean isOccupied() {
             return isOccupied;
+        }
+        
+        private boolean isBusy() {
+            return isBusy;
         }
 
         private void highlight() {
