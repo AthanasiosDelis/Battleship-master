@@ -98,6 +98,10 @@ public class BattleshipController implements Initializable {
         enemyBoardArea.getChildren().remove(enemyBoard);
         playerBoardArea.getChildren().remove(playerBoard);
         turn = 1;
+        
+        matrixPlayer = matrixPlayer1.clone() ;
+        
+        matrixEnemy =  matrixEnemy1.clone();
         initializeNewGame();
     }
 
@@ -152,8 +156,37 @@ public class BattleshipController implements Initializable {
         for (int[] row: mat) System.out.println(Arrays.toString(row));
     }
     
-    int[][] matrixPlayer =  new int[5][4];
-    int[][] matrixEnemy =  new int[5][4];
+    int[][] matrixPlayer =  { 
+    	    { 1, 1, 1, 1 }, 
+    	    { 2, 3, 1, 1 }, 
+    	    { 3, 5, 1, 1 }, 
+    	    { 4, 7, 1, 1 }, 
+    	    { 5, 9, 1, 1 }
+    	};
+    
+    int[][] matrixEnemy =  { 
+    	    { 1, 8, 7, 1 }, 
+    	    { 2, 2, 1, 1 }, 
+    	    { 3, 4, 1, 1 }, 
+    	    { 4, 6, 1, 1 }, 
+    	    { 5, 8, 1, 1 }
+    	};
+    
+    int[][] matrixPlayer1 =  { 
+    	    { 1, 1, 1, 1 }, 
+    	    { 2, 3, 1, 1 }, 
+    	    { 3, 5, 1, 1 }, 
+    	    { 4, 7, 1, 1 }, 
+    	    { 5, 9, 1, 1 }
+    	};
+    
+    int[][] matrixEnemy1 =  { 
+    	    { 1, 8, 7, 1 }, 
+    	    { 2, 2, 1, 1 }, 
+    	    { 3, 4, 1, 1 }, 
+    	    { 4, 6, 1, 1 }, 
+    	    { 5, 8, 1, 1 }
+    	};
     @FXML
     private void load(ActionEvent event) throws FileNotFoundException {
         
@@ -190,8 +223,8 @@ public class BattleshipController implements Initializable {
             	 		matrixPlayer[row][j] = Integer.parseInt(arrOfStr[j]);
                     }
         }
-        print2D(matrixPlayer);      
-        print2D(matrixEnemy); 
+        //print2D(matrixPlayer);      
+        //print2D(matrixEnemy); 
         initializeNewGame();
     }
     
@@ -243,60 +276,8 @@ public class BattleshipController implements Initializable {
     	board.placeShipOnBoardLoad(board.destroyer,matrixEnemy[0][1],matrixEnemy[0][2],matrixEnemy[0][3]);
     }
     
-  //##03
-    /*private void placeLoad(Board board)
-    {
-                Field start ;
-                int row, col, direction ;
-                
-                
-                row = matrixEnemy[0][1];
-                col = matrixEnemy[0][2];
-                direction = matrixEnemy[0][3];
-                start = new Field(row, col);
-                if (direction == 2) { board.destroyer.rotate(); }
-                board.setShip(board.destroyer, start);
-
-                row = matrixEnemy[1][1];
-                col = matrixEnemy[1][2];
-                direction = matrixEnemy[1][3];
-                start = new Field(row, col);
-                if (direction == 2) { board.submarine.rotate(); }
-                board.setShip(board.submarine, start);
-                
-                row = matrixEnemy[2][1];
-                col = matrixEnemy[2][2];
-                direction = matrixEnemy[2][3];
-                start = new Field(row, col);
-                if (direction == 2) { board.cruiser.rotate(); }
-                board.setShip(board.cruiser, start);
-                
-                row = matrixEnemy[3][1];
-                col = matrixEnemy[3][2];
-                direction = matrixEnemy[3][3];
-                start = new Field(row, col);
-                if (direction == 2) { board.battleship.rotate(); }
-                board.setShip(board.battleship, start);
-                
-                row = matrixEnemy[4][1];
-                col = matrixEnemy[4][2];
-                direction = matrixEnemy[4][3];
-                start = new Field(row, col);
-                if (direction == 2) { board.carrier.rotate(); }
-                board.setShip(board.carrier, start);
-    }*/
-    
-    
-    //getScore()
     
     //6bi
-   private static int eneyShipsCount (Board board){
-    	int count=0;
-    	if(board.carrier.isAlive()) {
-    		count++;
-    	}    	
-    	return count;
-   }
    
    private static String enemyShipState(Battleship ship){
 	   if(!ship.isAlive()) {

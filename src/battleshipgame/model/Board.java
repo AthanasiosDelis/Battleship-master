@@ -75,14 +75,14 @@ public class Board extends Parent {
     
     
     //Makes the tableaux
-    //EventHandler<? super MouseEvent> clickHandler,
+    
     public Board( boolean playerBoard) {
         this.playerBoard = playerBoard;
         for (int row = 0; row < ROW; row++) {
             HBox currentRow = new HBox();
             for (int col = 0; col < COL; col++) {
                 Field field = new Field(row, col);
-                //field.setOnMouseClicked(clickHandler);
+                
                 currentRow.getChildren().add(field);
             }
             rows.getChildren().add(currentRow);
@@ -103,7 +103,7 @@ public class Board extends Parent {
         for (int i = 0; i < shipSize; i++) {
             if (ship.hasHorizontalDirection()) {
                 Field occupiedField = getField(startField.getRow(), startField.getColumn() + i);
-                occupiedField.setShip(ship);
+                occupiedField.setShipField(ship);
                 if (startField.getRow()<9) {
                 	Field occupiedField1 = getField(startField.getRow()+1, startField.getColumn() + i);
                 	occupiedField1.setBusy(true);
@@ -124,7 +124,7 @@ public class Board extends Parent {
                 
             } else {
                 Field occupiedField = getField(startField.getRow() + i, startField.getColumn());
-                occupiedField.setShip(ship);
+                occupiedField.setShipField(ship);
                 if (startField.getColumn()<9) {
                 	Field occupiedField1 = getField(startField.getRow() + i, startField.getColumn() +1);
                 	occupiedField1.setBusy(true);
@@ -405,7 +405,7 @@ public class Board extends Parent {
             }
         }
 
-        private void setShip(Battleship battleship) {
+        private void setShipField(Battleship battleship) {
             this.battleship = battleship;
             isOccupied = true;
             if (playerBoard) {
