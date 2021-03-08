@@ -42,7 +42,7 @@ public class BattleshipController implements Initializable {
     private boolean enemyTurn;
     
     private static int turn = 1;
-    private static int lastTurn = 81;
+    private static int lastTurn = 11;
 
     private Battleship currentPlayerShip;
     
@@ -101,55 +101,6 @@ public class BattleshipController implements Initializable {
         initializeNewGame();
     }
 
-    
-    @FXML
-    private void load(ActionEvent event) throws FileNotFoundException {
-        
-            enemyBoardArea.getChildren().remove(enemyBoard);
-            playerBoardArea.getChildren().remove(playerBoard);
-            turn = 1;
-            
-        
-        
-        //C:\Users\Thanasis\Documents\COMPUTER_SCIENSE\Java\Battleship-master\medialab
-       /* int[][] matrixPlayer =  new int[5][4];
-        int[][] matrixEnemy =  new int[5][4];
-        
-        String pathEnemy = "medialab/enemy_default.txt";
-        String pathPlayer = "medialab/player_default_ok.txt";
-        
-        Scanner scEnemy = new Scanner(new File(pathEnemy));
-        Scanner scPlayer = new Scanner(new File(pathPlayer));
-        
-        int row = -1;
-        while (scEnemy.hasNextLine())
-        {
-             row++; 
-             String line = scEnemy.nextLine();
-             String[] arrOfStr = line.split(",");
-             for (int j=0; j<4; j++)
-                    {
-            	 		matrixEnemy[row][j] = Integer.parseInt(arrOfStr[j]);
-                    }
-        }
-        while (scPlayer.hasNextLine())
-        {
-             row++; 
-             String line = scPlayer.nextLine();
-             String[] arrOfStr = line.split(",");
-             for (int j=0; j<4; j++)
-                    {
-            	 		matrixPlayer[row][j] = Integer.parseInt(arrOfStr[j]);
-                    }
-        }*/
-        
-        
-        
-        initializeNewGame();
-    }
-    
-    
-
     @FXML
     private void exitGame(ActionEvent event) {
         Platform.exit();
@@ -197,6 +148,53 @@ public class BattleshipController implements Initializable {
         playerMove();
     }
     
+    private static void print2D(int mat[][]) {
+        for (int[] row: mat) System.out.println(Arrays.toString(row));
+    }
+    
+    int[][] matrixPlayer =  new int[5][4];
+    int[][] matrixEnemy =  new int[5][4];
+    @FXML
+    private void load(ActionEvent event) throws FileNotFoundException {
+        
+            enemyBoardArea.getChildren().remove(enemyBoard);
+            playerBoardArea.getChildren().remove(playerBoard);
+            turn = 1;  
+      
+                
+        String pathEnemy = "medialab/enemy_default.txt";
+        String pathPlayer = "medialab/player_default_ok.txt";
+        
+        Scanner scEnemy = new Scanner(new File(pathEnemy));
+        Scanner scPlayer = new Scanner(new File(pathPlayer));
+        
+        int row = -1;
+        while (scEnemy.hasNextLine())
+        {
+             row++; 
+             String line = scEnemy.nextLine();
+             String[] arrOfStr = line.split(",");
+             for (int j=0; j<4; j++)
+                    {
+            	 		matrixEnemy[row][j] = Integer.parseInt(arrOfStr[j]);
+                    }
+        }
+        row = -1;
+        while (scPlayer.hasNextLine())
+        {
+             row++; 
+             String line = scPlayer.nextLine();
+             String[] arrOfStr = line.split(",");
+             for (int j=0; j<4; j++)
+                    {
+            	 		matrixPlayer[row][j] = Integer.parseInt(arrOfStr[j]);
+                    }
+        }
+        print2D(matrixPlayer);      
+        print2D(matrixEnemy); 
+        initializeNewGame();
+    }
+    
 
     private void initializeNewGame() {       
         gameResult.setText("");
@@ -213,33 +211,80 @@ public class BattleshipController implements Initializable {
         gameRunning = false;
         enemyTurn = false;
         playerBoard = new Board( true);        
-        enemyBoard = new Board( false);
-        
-        
-        placeShipOnBoardRandomly(playerBoard);
-        startGame();
-        
+        enemyBoard = new Board( false);        
+        placeShipsLoad(playerBoard);
+        placeShipsLoad(enemyBoard);
+        gameRunning = true;        
         try {
         	if(playerBoard.getTotalShipsCount() > 5 ) throw new InvalidCountExeception();
         } catch(InvalidCountExeception e ) {
         	System.out.println("InvalidCount");
         	System.exit(0);
-        }
-        
-        try {
-        	if(enemyBoard.getTotalShipsCount() > 5 ) throw new InvalidCountExeception();
-        } catch(InvalidCountExeception e ) {
-        	System.out.println("InvalidCount");
-        	System.exit(0);
-        }
-        
-        
+        } 
         enemyBoardArea.getChildren().add(enemyBoard);
         playerBoardArea.getChildren().add(playerBoard);
     }
-        //Manual ship placement function 
-    
 
+    //##01
+    private void placeRandomly(Board board) {    	
+    	board.placeShipOnBoardRandomly(board.carrier);
+    	board.placeShipOnBoardRandomly(board.battleship);
+    	board.placeShipOnBoardRandomly(board.cruiser);
+    	board.placeShipOnBoardRandomly(board.submarine);
+    	board.placeShipOnBoardRandomly(board.destroyer);
+    }
+    
+    private void placeShipsLoad(Board board) {
+    	
+    	board.placeShipOnBoardLoad(board.carrier,matrixEnemy[4][1],matrixEnemy[4][2],matrixEnemy[4][3]);
+    	board.placeShipOnBoardLoad(board.battleship,matrixEnemy[3][1],matrixEnemy[3][2],matrixEnemy[3][3]);
+    	board.placeShipOnBoardLoad(board.cruiser,matrixEnemy[2][1],matrixEnemy[2][2],matrixEnemy[2][3]);
+    	board.placeShipOnBoardLoad(board.submarine,matrixEnemy[1][1],matrixEnemy[1][2],matrixEnemy[1][3]);
+    	board.placeShipOnBoardLoad(board.destroyer,matrixEnemy[0][1],matrixEnemy[0][2],matrixEnemy[0][3]);
+    }
+    
+  //##03
+    /*private void placeLoad(Board board)
+    {
+                Field start ;
+                int row, col, direction ;
+                
+                
+                row = matrixEnemy[0][1];
+                col = matrixEnemy[0][2];
+                direction = matrixEnemy[0][3];
+                start = new Field(row, col);
+                if (direction == 2) { board.destroyer.rotate(); }
+                board.setShip(board.destroyer, start);
+
+                row = matrixEnemy[1][1];
+                col = matrixEnemy[1][2];
+                direction = matrixEnemy[1][3];
+                start = new Field(row, col);
+                if (direction == 2) { board.submarine.rotate(); }
+                board.setShip(board.submarine, start);
+                
+                row = matrixEnemy[2][1];
+                col = matrixEnemy[2][2];
+                direction = matrixEnemy[2][3];
+                start = new Field(row, col);
+                if (direction == 2) { board.cruiser.rotate(); }
+                board.setShip(board.cruiser, start);
+                
+                row = matrixEnemy[3][1];
+                col = matrixEnemy[3][2];
+                direction = matrixEnemy[3][3];
+                start = new Field(row, col);
+                if (direction == 2) { board.battleship.rotate(); }
+                board.setShip(board.battleship, start);
+                
+                row = matrixEnemy[4][1];
+                col = matrixEnemy[4][2];
+                direction = matrixEnemy[4][3];
+                start = new Field(row, col);
+                if (direction == 2) { board.carrier.rotate(); }
+                board.setShip(board.carrier, start);
+    }*/
     
     
     //getScore()
@@ -480,21 +525,10 @@ public class BattleshipController implements Initializable {
         	
     }
 
-    private void startGame() {    	
-    	placeShipOnBoardRandomly(enemyBoard);
-        gameRunning = true;
-    }
+   
     
-    //MUst not change
-    //MAY NOT NEEDED IN HE FINAL DESIGN
-    private void placeShipOnBoardRandomly(Board board) {
-    	
-    	board.placeShipOnBoardRandomly(board.carrier);
-    	board.placeShipOnBoardRandomly(board.battleship);
-    	board.placeShipOnBoardRandomly(board.cruiser);
-    	board.placeShipOnBoardRandomly(board.submarine);
-    	board.placeShipOnBoardRandomly(board.destroyer);
-    }
+    
+
     
   //MUst not change
     //MAY NOT NEEDED IN HE FINAL DESIGN

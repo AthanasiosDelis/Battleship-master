@@ -240,6 +240,7 @@ public class Board extends Parent {
         }
     }
 
+    //##01
     public void placeShipOnBoardRandomly(Battleship battleship) {
         boolean shipPlaced;
         Random random = new Random();
@@ -257,25 +258,22 @@ public class Board extends Parent {
         } while (!shipPlaced);
     }
     
+    
     public void placeShipOnBoardLoad(Battleship battleship, int rowShip ,int colShip ,int direction) {
         boolean shipPlaced;
         Random random = new Random();
 
-        do {
-            int row = rowShip -1;
-            int col = colShip -1;
+        
+            int row = rowShip ;
+            int col = colShip ;
             Field start = new Field(row, col);
-            
-            if(direction == 1) {
-            	battleship.rotate();
-            }
 
             if(direction == 2) {
             	battleship.rotate();
             }
 
             shipPlaced = setShip(battleship, start);
-        } while (!shipPlaced);
+        
     }
     
     //JUST A GETTER
@@ -335,7 +333,7 @@ public class Board extends Parent {
         private Battleship battleship;
         
                 
-        private Field(int row, int column) {
+        public Field(int row, int column) {
             super(FIELD_SIZE, FIELD_SIZE);
             this.row = row;
             this.column = column;
