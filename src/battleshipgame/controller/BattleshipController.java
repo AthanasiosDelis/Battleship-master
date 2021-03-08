@@ -42,7 +42,7 @@ public class BattleshipController implements Initializable {
     private boolean enemyTurn;
     
     private static int turn = 1;
-    private static int lastTurn = 11;
+    private static int lastTurn = 101;
 
     private Battleship currentPlayerShip;
     
@@ -99,9 +99,9 @@ public class BattleshipController implements Initializable {
         playerBoardArea.getChildren().remove(playerBoard);
         turn = 1;
         
-        matrixPlayer = matrixPlayer1.clone() ;
-        
+        matrixPlayer = matrixPlayer1.clone() ;        
         matrixEnemy =  matrixEnemy1.clone();
+        
         initializeNewGame();
     }
 
@@ -151,12 +151,8 @@ public class BattleshipController implements Initializable {
     	}
         playerMove();
     }
-    
-    private static void print2D(int mat[][]) {
-        for (int[] row: mat) System.out.println(Arrays.toString(row));
-    }
-    
-    int[][] matrixPlayer =  { 
+        
+    private int[][] matrixPlayer =  { 
     	    { 1, 1, 1, 1 }, 
     	    { 2, 3, 1, 1 }, 
     	    { 3, 5, 1, 1 }, 
@@ -164,7 +160,7 @@ public class BattleshipController implements Initializable {
     	    { 5, 9, 1, 1 }
     	};
     
-    int[][] matrixEnemy =  { 
+    private int[][] matrixEnemy =  { 
     	    { 1, 8, 7, 1 }, 
     	    { 2, 2, 1, 1 }, 
     	    { 3, 4, 1, 1 }, 
@@ -172,7 +168,7 @@ public class BattleshipController implements Initializable {
     	    { 5, 8, 1, 1 }
     	};
     
-    int[][] matrixPlayer1 =  { 
+    private int[][] matrixPlayer1 =  { 
     	    { 1, 1, 1, 1 }, 
     	    { 2, 3, 1, 1 }, 
     	    { 3, 5, 1, 1 }, 
@@ -180,7 +176,7 @@ public class BattleshipController implements Initializable {
     	    { 5, 9, 1, 1 }
     	};
     
-    int[][] matrixEnemy1 =  { 
+    private int[][] matrixEnemy1 =  { 
     	    { 1, 8, 7, 1 }, 
     	    { 2, 2, 1, 1 }, 
     	    { 3, 4, 1, 1 }, 
@@ -223,8 +219,6 @@ public class BattleshipController implements Initializable {
             	 		matrixPlayer[row][j] = Integer.parseInt(arrOfStr[j]);
                     }
         }
-        //print2D(matrixPlayer);      
-        //print2D(matrixEnemy); 
         initializeNewGame();
     }
     
@@ -291,7 +285,7 @@ public class BattleshipController implements Initializable {
     	 
 
     private void playerMove() {
-    	
+    		System.out.println("Player" + turn);
     		Random random = new Random();
     		int row = random.nextInt(10) + 1;
     		int col = random.nextInt(10) + 1;
@@ -329,16 +323,26 @@ public class BattleshipController implements Initializable {
             }
             playerStats.add(statsTurn);
             //System.out.println(playerStats);
-
-            if (enemyBoard.getShipsCount() == 0) {
+            playerShipsRemaining.setText(Integer.toString(playerBoard.getShipsCount()));
+            enemyShipsRemaining.setText(Integer.toString(enemyBoard.getShipsCount()));
+            playerPercentage.setText(Integer.toString(playerBoard.getPercentage()));
+            enemyPercentage.setText(Integer.toString(enemyBoard.getPercentage()));
+            enemyScore.setText(Integer.toString(enemyBoard.getScore()));
+            playerScore.setText(Integer.toString(playerBoard.getScore()));
+            
+            /*if (enemyBoard.getShipsCount() == 0) {
                 gameRunning = false;
                 gameResult.setText("You won the game!");
-            }
+            }*/
 
             if (gameRunning) {
                 enemyMove();
             }
         
+    }
+    
+    private static void print2D(int mat[]) {
+        for (int row: mat) System.out.println(Integer.toString(row));
     }
     
     boolean success = false ;
@@ -347,11 +351,24 @@ public class BattleshipController implements Initializable {
     int l = -1;
     int [] where = new int[2];
     //int [] where = new int[2];
-    ArrayList<int []> Locations =new ArrayList<int []>();
+    int [][] array = new int[5][2];
+    int [][] array1 = {
+    		{0,0},
+			{0,0},
+			{0,0},
+			{0,0},
+			{0,0},    		
+    };
     boolean strategy = false;
     boolean hori = true;
-    //ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
+    int horiz = 1;
+    int initialize = 1;
+    ArrayList<Integer> list = new ArrayList<Integer>();
     //Automates enemy moves
+    private int next = 0;
+    private int [] tmp = new int[2];
+    boolean alive = true;
+    boolean forbit = false;
     private void enemyMove() {
         Random random = new Random();
         Board.Field field;
@@ -359,91 +376,232 @@ public class BattleshipController implements Initializable {
         do {
         	int row = -1;
         	int col = -1;
-        	int next = 0;
+        	
         	boolean initial = false;
         	//Boolean.parseBoolean(enemyStats.get(0));
-        	if(turn > 1) {
+        	
+        	//initialize = 1; MISS_1
+        	if(turn > 1 && !strategy) {
         		//System.out.println(Boolean.parseBoolean(enemyStats.get(enemyStats.size()-1)));
-        		if(success && !strategy) {
-        			strategy = true;
-        			initial = true;
-        			
-        			if (r<9) {
-        				where[0] = r + 1;
-        				where[1] = c;        			
-        				Locations.add(where);        				
-        				//System.out.println("1Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
-                    }
-                    if (r>0) {
-                    	where[0] = r -1;
-                    	where[1] = c;
-                    	Locations.add(where);
-                    }
-                    if (c>0) {
-                    	where[0] = r;
-                    	where[1] = c -1;
-                    	Locations.add(where);
-                    }
-                    if (c <9) {
-                    	where[0] = r;
-                    	where[1] = c + 1;
-                    	Locations.add(where);                    	
-                    }
-                    System.out.println(Locations);
-        		}
+        		row = random.nextInt(10);
+        		col = random.nextInt(10);
+        		initialize = 1;
         	}
-        	/*
-          	boolean temp2 = (success && strategy);
-        	if(temp2 && !initial) {
-        		Locations.clear();
-        		next = 0;
-        		if (hori == true) {
-        			row = random.nextInt(10);
-            		col = random.nextInt(10);
-            		System.out.println(turn);
-            		System.out.println("3Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
-        		}else if (hori == false) {
-        			row = random.nextInt(10);
-            		col = random.nextInt(10);
-            		System.out.println(turn);
-            		System.out.println("4Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
-        		}
-        		strategy = false;
+        	//START
+        	else if (turn == 1 && !strategy) {
+        		initialize = 1;
+        		row = random.nextInt(10);
+        		col = random.nextInt(10);
         	}
         	
-        	boolean temp1 = (!success && strategy);
-        	if( temp1 || initial) {
-        		initial = false;      		
-        		int [] tmp = new int[2];
-        		tmp = Locations.get(next);
+        	
+        	//1st HIT
+    		if(success && initialize == 1) {
+    			strategy = true;
+    			initialize = 2;
+    			success = false;
+    			
+    			array [4][0]  = r;
+				array [4][1]  = c;   
+				
+				System.out.println(array [4][0]);
+				System.out.println(array [4][1]);
+				
+    			
+    			if (r<9) {
+    				array [0][0] = where[0] = r + 1;
+    				array [0][1] = where[1] = c;        			
+    				//Locations.add(where);
+    				//print2D(where);print2D(where);
+    				//System.out.println("LOCATIONS : " + Locations);
+    				//System.out.println("1Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
+                }
+                if (r>0) {
+                	array [1][0] =  where[0] = r -1;
+                	array [1][1] = where[1] = c;
+                	//Locations.add(where);
+                	//print2D(where);
+                	//System.out.println("LOCATIONS : " + Locations);
+                }
+                if (c>0) {
+                	array [2][0] = where[0] = r;
+                	array [2][1] = where[1] = c -1;
+                	//Locations.add(where);
+                	//print2D(where);
+                	//System.out.println("LOCATIONS : " + Locations);
+                }
+                if (c <9) {
+                	array [3][0] = where[0] = r;
+                	array [3][1] = where[1] = c + 1;
+                	//Locations.add(where);
+                	//print2D(where);
+                	//System.out.println("LOCATIONS : " + Locations);
+                }
+                //int [] tmp = new int[2];
+        		//tmp = Locations.get(next);
+        		//next++;
+        		//row = tmp[0];
+        		//col = tmp[1];
+                //System.out.println(" TURN: " + turn);
+                //System.out.println(" HERE 0 ");
+                //System.out.println(" next: " + next);
+                //System.out.println("1Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));        	
+                //System.out.println("LOCATIONS : " + Locations);
+    		}
+        	
+        	//MISS_2
+          	boolean temp2 = (!success && strategy);
+        	if(temp2 && initialize == 2) {
+        	//	System.out.println(" HERE 1 ");
+        		
+        		//tmp = Locations.get(next).clone();
+        		//Locations.remove(next);
+        		//print2D(tmp);
+        		//
+        		row = array [next][0];
+        		col = array [next][1];
         		next++;
-        		row = tmp[0];
-        		col = tmp[1];
         		
-        		System.out.println(turn);
-        		System.out.println("2Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));        		
-        		System.out.println(Locations);
-        	}*/
+        	//	System.out.println(" TURN: " + turn);
+        	//	System.out.println(" next: " + next);
+        	//	System.out.println(" 2Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));        		
+        		//System.out.println("LOCATIONS : " + Locations);
+      
+        	}
+        	
+        	//2nd HIT
+        	boolean temp1 = (success && strategy);
+        	if( temp1 && initialize == 2) {
+        		//System.out.println(" HERE 2 ");
+        		initialize = 3;
+        		strategy = alive;
+        		next = 0;
+        		success = true;
+        		forbit = true;
         		
+        //		System.out.println(" next: " + next);
+        		//Locations.clear();
+        		//next = 0;
+        	//	System.out.println(Boolean.toString(hori));
+		
+        		if (hori == true) {
+        			for(int i=1; i<l; i++) {
+        				if( array[4][1] + i < 10) {
+        					list.add(array[4][1] + i);// length
+        				}
+            			
+           // 			System.out.println(list);
+            		}
+        			for(int i=1; i<l; i++) {
+        				if( array[4][1] - i > -1) {
+        					list.add(array[4][1] - i);// length
+        				}
+            			
+          //  			System.out.println(list);
+            		}
+        			col = list.get(next);
+            		row = array[4][0];
+            		next++;
+            	//	System.out.println(turn);
+            	//	System.out.println(" next: " + next);
+            	//	System.out.println("3Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
+        		}else if (hori == false) {
+        			for(int i=1; i<l; i++) {
+        				if(array[4][0] + i < 10) {
+        					list.add(array[4][0] + i);// length
+        				}
+            			
+            		//	System.out.println(list);
+            		}
+        			for(int i=1; i<l; i++) {
+            			if(array[4][0] - i> -1) {
+            				list.add(array[4][0] - i);// length
+            			}
+        				
+            		//	System.out.println(list);
+            		}
+        			col = array[4][1];
+        			row = list.get(next);            		
+            		next++;
+            	//	System.out.println(turn);
+            	//	System.out.println(" next: " + next);
+            	//	System.out.println("4Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
+        		}
+        		if(!strategy) {
+    				initialize = 1;
+    				list.clear();
+    				next = 0;
+    				array = array1.clone();
+            		row = random.nextInt(10);
+            		col = random.nextInt(10);
+        		}
+        		
+        	}
+        	
+        	
+        	//strategy = alive;
+        	boolean temp5 = (!forbit && strategy);
+        	if( temp5 && initialize == 3) {
+        		if (hori == true) {
+        		strategy = alive;
+        			if(alive) {
+        				col = list.get(next);
+                		row = array[4][0];
+                		next++;
+        			}else if(!alive ) {
+        				initialize = 1;
+        				list.clear();
+        				next = 0;
+        				array = array1.clone();
+        				row = random.nextInt(10);
+                		col = random.nextInt(10);
+        			}
+        		
+        		//System.out.println(turn);
+        	//	System.out.println(" next: " + next);
+        	//	System.out.println("5Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
+        		
+        		}else if (hori == false) {
+    			strategy = alive;
+    				if(alive) {
+    					row = list.get(next);
+    					col = array[4][1];
+    					next++;
+    				}else if(!alive ) {
+    					initialize = 1;
+    					list.clear();
+    					next = 0;
+    					array = array1.clone();
+    					row = random.nextInt(10);
+    					col = random.nextInt(10);
+    				}
+    			
+        		//col = random.nextInt(10);
+        	//	System.out.println(turn);
+        	//	System.out.println(" next: " + next);
+        	//	System.out.println("6Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
+        		}  
+        }
+        	
+        	
         	
 
         	
-        	//if(!success && !strategy) {
-        		row = random.nextInt(10);
-        		col = random.nextInt(10);
-        		//System.out.println("5Row: " + Integer.toString(row) + "Col: "+  Integer.toString(col));
-        	//}
-            
         	
+        	forbit = false;
             field = playerBoard.getField(row, col);
             
             playerRowChoice.setText(Integer.toString(row+1));
             playerColChoice.setText(Integer.toString(col+1));
-            
+            //System.out.println(" HERE 3 BEFORE SHOOT");
             if (field.wasShot()) {
-                break;
-            }
-            
+            	System.out.println("Enemy TURN: " + turn);
+            	System.out.println(" HERE 4 was SHOOTed ");
+            	success = false;
+            	enemyTurn = true;
+                //break;
+            }else {
+            	//System.out.println(" HERE 5 ");
             boolean goodShot = playerBoard.receiveShot(field);
             enemyTurn = false;
             playerShipsRemaining.setText(Integer.toString(playerBoard.getShipsCount()));
@@ -464,10 +622,12 @@ public class BattleshipController implements Initializable {
             statsTurn += "Hit: " + Boolean.toString(goodShot) + '\n';		
             success = goodShot;
             if(goodShot) {
+            	System.out.println(" HERE 5 SUCCESS = TRUE ");
             	r = row;
             	c = col;
             	l = field.getLength();
             	hori = field.getDirection();
+            	alive = field.getAlive();
             	statsTurn += "Name: " + field.getName() + '\n' ;
             }
 
@@ -479,11 +639,13 @@ public class BattleshipController implements Initializable {
             	//System.out.println(enemyStats.get(i).get(j)) ;
             //}
             
-            
-            if (playerBoard.getShipsCount() == 0) {
+            //***********
+           /* if (playerBoard.getShipsCount() == 0) {
                 gameRunning = false;
                 gameResult.setText("You lost :(");
+            }*/
             }
+            
             
             
             

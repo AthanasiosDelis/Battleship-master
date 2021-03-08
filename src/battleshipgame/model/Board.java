@@ -367,6 +367,10 @@ public class Board extends Parent {
         public int getRow() {
             return row;
         }
+        
+        public boolean getAlive() {
+            return this.battleship.isAlive();
+        }
 
         public int getColumn() {
             return column;
