@@ -10,12 +10,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -183,16 +188,26 @@ public class BattleshipController implements Initializable {
     	    { 4, 6, 1, 1 }, 
     	    { 5, 8, 1, 1 }
     	};
+    
+		
+	
+    
     @FXML
     private void load(ActionEvent event) throws FileNotFoundException {
         
             enemyBoardArea.getChildren().remove(enemyBoard);
             playerBoardArea.getChildren().remove(playerBoard);
             turn = 1;  
-      
-                
-        String pathEnemy = "medialab/enemy_default.txt";
-        String pathPlayer = "medialab/player_default_ok.txt";
+        
+        //String[] str = new String[2];
+         
+        PopUpWindow.SignUpForm("Load");
+        //System.out.println(PopUpWindow.str[0]);
+        //System.out.println(PopUpWindow.str[1]);
+        String pathEnemy = PopUpWindow.str[0];
+        String pathPlayer = PopUpWindow.str[1];
+       // medialab/enemy_default.txt
+        // medialab/player_default_ok.txt
         
         Scanner scEnemy = new Scanner(new File(pathEnemy));
         Scanner scPlayer = new Scanner(new File(pathPlayer));
