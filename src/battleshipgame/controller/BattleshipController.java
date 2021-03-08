@@ -101,34 +101,49 @@ public class BattleshipController implements Initializable {
         initializeNewGame();
     }
 
-    public  int[][] matrixPlayer =  new int[5][4];
-    public  int[][] matrixEnemy =  new int[5][4];
+    
     @FXML
     private void load(ActionEvent event) throws FileNotFoundException {
-        if (gameRunning) {
+        
             enemyBoardArea.getChildren().remove(enemyBoard);
             playerBoardArea.getChildren().remove(playerBoard);
             turn = 1;
             
-        }
+        
         
         //C:\Users\Thanasis\Documents\COMPUTER_SCIENSE\Java\Battleship-master\medialab
+       /* int[][] matrixPlayer =  new int[5][4];
+        int[][] matrixEnemy =  new int[5][4];
         
-        String path = "medialab/enemy_default.txt";
+        String pathEnemy = "medialab/enemy_default.txt";
+        String pathPlayer = "medialab/player_default_ok.txt";
         
-        Scanner sc = new Scanner(new File(path));
+        Scanner scEnemy = new Scanner(new File(pathEnemy));
+        Scanner scPlayer = new Scanner(new File(pathPlayer));
         
         int row = -1;
-        while (sc.hasNextLine())
+        while (scEnemy.hasNextLine())
         {
              row++; 
-             String line = sc.nextLine();
+             String line = scEnemy.nextLine();
              String[] arrOfStr = line.split(",");
              for (int j=0; j<4; j++)
                     {
             	 		matrixEnemy[row][j] = Integer.parseInt(arrOfStr[j]);
                     }
         }
+        while (scPlayer.hasNextLine())
+        {
+             row++; 
+             String line = scPlayer.nextLine();
+             String[] arrOfStr = line.split(",");
+             for (int j=0; j<4; j++)
+                    {
+            	 		matrixPlayer[row][j] = Integer.parseInt(arrOfStr[j]);
+                    }
+        }*/
+        
+        
         
         initializeNewGame();
     }
@@ -199,6 +214,7 @@ public class BattleshipController implements Initializable {
         enemyTurn = false;
         playerBoard = new Board( true);        
         enemyBoard = new Board( false);
+        
         
         placeShipOnBoardRandomly(playerBoard);
         startGame();
@@ -320,7 +336,7 @@ public class BattleshipController implements Initializable {
         	int next = 0;
         	boolean initial = false;
         	//Boolean.parseBoolean(enemyStats.get(0));
-        	/*if(turn > 1) {
+        	if(turn > 1) {
         		//System.out.println(Boolean.parseBoolean(enemyStats.get(enemyStats.size()-1)));
         		if(success && !strategy) {
         			strategy = true;
@@ -350,7 +366,7 @@ public class BattleshipController implements Initializable {
                     System.out.println(Locations);
         		}
         	}
-        	
+        	/*
           	boolean temp2 = (success && strategy);
         	if(temp2 && !initial) {
         		Locations.clear();
