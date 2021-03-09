@@ -44,6 +44,15 @@ public class BattleshipController implements Initializable {
     private Scanner scEnemy;
     private Scanner scPlayer;
     private boolean fireAuto;
+    boolean strategy = false;
+    boolean hori = true;
+    int horiz = 1;
+    int initialize = 1;
+    ArrayList<Integer> list = new ArrayList<Integer>();    
+    ArrayList<Integer> list1 = new ArrayList<Integer>(); 
+    private int next = 0;    
+    boolean alive = true;
+    boolean forbit = false;
     
     
     @FXML
@@ -98,6 +107,16 @@ public class BattleshipController implements Initializable {
         enemyBoardArea.getChildren().remove(enemyBoard);
         playerBoardArea.getChildren().remove(playerBoard);
         turn = 1;
+        list.clear();
+        list = (ArrayList<Integer>) list1.clone();
+        next=0;
+        success = false ;
+        forbit=false;
+        strategy = false;
+        hori = true;
+        initialize = 1;
+        alive = true;
+        array = array1.clone();
         firstTurnPlayer = rand.nextBoolean();
         matrixPlayer = matrixPlayer1.clone() ;        
         matrixEnemy =  matrixEnemy1.clone();
@@ -152,14 +171,29 @@ public class BattleshipController implements Initializable {
 			try{
 				int row;
 				int col;
+				float rowf;
+				float colf;
 				String tmp1;
 	    		String tmp2;
 				tmp1 = playerRow.getText();
 				tmp2 = playerCol.getText();
-				//PopUpWindow.display(Boolean.toString(isNumeric(tmp1) ) ,Boolean.toString(isNumeric(tmp2)));
+				//PopUpWindow.display(BoolFean.toString(isNumeric(tmp1) ) ,Boolean.toString(isNumeric(tmp2)));
 				if( !isNumeric(tmp1) || !isNumeric(tmp2)) throw new CoordinatesException ();
-				row = Integer.parseInt(tmp1);
-				col = Integer.parseInt(tmp2);
+				
+				try {
+					rowf = Float.parseFloat(tmp1); 
+					colf = Float.parseFloat(tmp2);
+					row =(int) rowf;
+					col =(int)  colf;					
+				}catch(java.lang.NumberFormatException e) {
+					PopUpWindow.display("Exception","Float, really?!");
+					rowf = Float.parseFloat(tmp1); 
+					colf = Float.parseFloat(tmp2);
+					row =(int) rowf;
+					col =(int)  colf;
+				}
+				//row = Integer.parseInt(tmp1);
+				//col = Integer.parseInt(tmp2);
 				//PopUpWindow.display(Boolean.toString(row >10 || row<1),Boolean.toString(col >10 || col<1));
 				if((row >10 || row<1) || (col >10 || col<1)) throw new CoordinatesException ();
 				//if() throw	new CoordinatesException ();		
@@ -234,9 +268,18 @@ public class BattleshipController implements Initializable {
         
             enemyBoardArea.getChildren().remove(enemyBoard);
             playerBoardArea.getChildren().remove(playerBoard);
-            turn = 1;  
             firstTurnPlayer = rand.nextBoolean();      
-         
+            turn = 1;
+            list.clear();
+            list = (ArrayList<Integer>) list1.clone();
+            next=0;
+            forbit=false;
+            strategy = false;
+            hori = true;
+            initialize = 1;
+            alive = true;
+            array = array1.clone();
+            success = false ;
         PopUpWindow.SignUpForm("Load");
         String pathEnemy = PopUpWindow.str[0];
         String pathPlayer = PopUpWindow.str[1];
@@ -367,6 +410,8 @@ public class BattleshipController implements Initializable {
     		Random random = new Random();
     		int row = -1;
     		int col = -1;
+    		float rowf = -1;
+    		float colf = -1;
     		//boolean allGood = true;
     		
     		
@@ -376,10 +421,18 @@ public class BattleshipController implements Initializable {
     				col = random.nextInt(10) + 1;
     				//allGood=true;
     			}else if (!fireAuto){
-    				row = Integer.parseInt(playerRow.getText());
-    				col = Integer.parseInt(playerCol.getText());
-    			}  			
-
+        				try {
+        					rowf = Float.parseFloat(playerRow.getText()); 
+        					colf = Float.parseFloat(playerCol.getText());
+        					row =(int) rowf;
+        					col =(int)  colf;					
+        				}catch(java.lang.NumberFormatException e) {
+        					rowf = Float.parseFloat(playerRow.getText()); 
+        					colf = Float.parseFloat(playerCol.getText());
+        					row =(int) rowf;
+        					col =(int)  colf;
+        				}
+        			}  	
             Board.Field currentField = enemyBoard.getField(row - 1, col - 1);
 
             if (currentField.wasShot()) {
@@ -445,7 +498,7 @@ public class BattleshipController implements Initializable {
     
    
     //Automates enemy moves
-    boolean success = false ;
+    private static boolean  success = false ;
     int r = -1;
     int c = -1;
     int l = -1;  
@@ -457,14 +510,7 @@ public class BattleshipController implements Initializable {
 			{0,0},
 			{0,0},    		
     };
-    boolean strategy = false;
-    boolean hori = true;
-    int horiz = 1;
-    int initialize = 1;
-    ArrayList<Integer> list = new ArrayList<Integer>();    
-    private int next = 0;    
-    boolean alive = true;
-    boolean forbit = false;
+
     private void enemyMove() {
         Random random = new Random();
         Board.Field field;
