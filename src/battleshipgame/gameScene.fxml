@@ -141,5 +141,8 @@
          </children>
       </HBox>
    </bottom>
+   <right>
+      <Button mnemonicParsing="false" onAction="#FireAuto" text="Fire Auto" BorderPane.alignment="CENTER" />
+   </right>
 
 </BorderPane>

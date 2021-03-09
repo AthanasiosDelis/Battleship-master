@@ -1,36 +1,25 @@
 package src.battleshipgame.controller;
 
+import src.battleshipgame.CoordinatesException;
 import src.battleshipgame.InvalidCountExeception;
 import src.battleshipgame.PopUpWindow;
 import src.battleshipgame.model.Battleship;
-import src.battleshipgame.model.Board.Field;
 import src.battleshipgame.model.Board;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * @author Athanasios Delis on 07.03.2021.
@@ -53,6 +42,8 @@ public class BattleshipController implements Initializable {
     private ArrayList<String> playerStats = new ArrayList<String>();
     private Scanner scEnemy;
     private Scanner scPlayer;
+    private boolean fireAuto;
+    
     
     @FXML
     private Label gameResult;
@@ -148,7 +139,48 @@ public class BattleshipController implements Initializable {
     }
     
     @FXML
-    private void Fire(ActionEvent event) { 
+    private void Fire(ActionEvent event) {
+    	fireAuto = false;
+    	boolean t = turn < lastTurn ;
+    	boolean v =t && gameRunning ;
+    	if ( !gameRunning || !v ) {  		
+    		return ;
+    	}
+    	
+    	   				
+			try{
+				int row;
+				int col;
+				String tmp1;
+	    		String tmp2;
+				tmp1 = playerRow.getText();
+				tmp2 = playerCol.getText();
+				//PopUpWindow.display(Boolean.toString(isNumeric(tmp1) ) ,Boolean.toString(isNumeric(tmp2)));
+				if( !isNumeric(tmp1) || !isNumeric(tmp2)) throw new CoordinatesException ();
+				row = Integer.parseInt(tmp1);
+				col = Integer.parseInt(tmp2);
+				if((row >10 && row<1) || (col >10 && col<1)) throw new CoordinatesException ();
+				//if() throw	new CoordinatesException ();		
+			}catch(CoordinatesException e) {
+				PopUpWindow.display("Exception","Numbers from 1-10 as coordinates, dummy!");
+				//allGood = false;
+				return;
+			}
+		
+    	
+    	
+    	//RANDOM TURN
+    	if( firstTurnPlayer) {
+    		playerMove();
+    	}
+    	else {
+    		enemyMove();
+    	}        
+    }
+    
+    @FXML
+    private void FireAuto(ActionEvent event) {
+    	fireAuto = true;
     	boolean t = turn < lastTurn ;
     	boolean v =t && gameRunning ;
     	if ( !gameRunning || !v ) {  		
@@ -196,7 +228,7 @@ public class BattleshipController implements Initializable {
     	};
     
     @FXML
-    private void load(ActionEvent event) throws FileNotFoundException {
+    private void load(ActionEvent event) throws FileNotFoundException, NullPointerException {
         
             enemyBoardArea.getChildren().remove(enemyBoard);
             playerBoardArea.getChildren().remove(playerBoard);
@@ -212,8 +244,11 @@ public class BattleshipController implements Initializable {
         	scEnemy = new Scanner(new File(pathEnemy)); 
         	scPlayer = new Scanner(new File(pathPlayer));
         } catch (FileNotFoundException e) {
-            Platform.exit();
-        	System.exit(0);
+        	PopUpWindow.display("Exception","FileNotFoundException") ;
+        	return;
+        }catch (NullPointerException e) {
+        	PopUpWindow.display("Exception","NullPointerException") ;
+        	return;
         }
                 
         int row = -1;
@@ -314,12 +349,32 @@ public class BattleshipController implements Initializable {
     	}
    }
     	 
+   //IF YOU REALLY READ THE CODE YEAH I KNOW DA FUCK WITH THIS APPROACH?!?!?
+   private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
-    private void playerMove() {
+   public boolean isNumeric(String strNum) {
+       if (strNum == null) {
+           return false; 
+       }
+       return pattern.matcher(strNum).matches();
+   }
+    private void playerMove(){
     		
     		Random random = new Random();
-    		int row = random.nextInt(10) + 1;
-    		int col = random.nextInt(10) + 1;
+    		int row = -1;
+    		int col = -1;
+    		//boolean allGood = true;
+    		
+    		
+    		
+    			if(fireAuto) {
+    				row = random.nextInt(10) + 1;
+    				col = random.nextInt(10) + 1;
+    				//allGood=true;
+    			}else if (!fireAuto){
+    				row = Integer.parseInt(playerRow.getText());
+    				col = Integer.parseInt(playerCol.getText());
+    			}  			
 
             Board.Field currentField = enemyBoard.getField(row - 1, col - 1);
 
@@ -350,8 +405,8 @@ public class BattleshipController implements Initializable {
             
             playerShipsRemaining.setText("Player ShipsRemaining: " + Integer.toString(playerBoard.getShipsCount()));
             enemyShipsRemaining.setText("Enemy ShipsRemaining: " +Integer.toString(enemyBoard.getShipsCount()));
-            playerPercentage.setText("Player Percentage: " +Integer.toString(playerBoard.getPercentage()));
-            enemyPercentage.setText("Enemy Percentage: " +Integer.toString(enemyBoard.getPercentage()));
+            playerPercentage.setText("Player Percentage: " +Float.toString(playerBoard.getPercentage()) + "%" );
+            enemyPercentage.setText("Enemy Percentage: " +Float.toString(enemyBoard.getPercentage()) + "%" );
             enemyScore.setText("Enemy Score: " +Integer.toString(enemyBoard.getScore()));
             playerScore.setText("Player Score: " +Integer.toString(playerBoard.getScore()));
             
@@ -558,8 +613,8 @@ public class BattleshipController implements Initializable {
             enemyTurn = false;
             playerShipsRemaining.setText("Player ShipsRemaining: " + Integer.toString(playerBoard.getShipsCount()));
             enemyShipsRemaining.setText("Enemy ShipsRemaining: " +Integer.toString(enemyBoard.getShipsCount()));
-            playerPercentage.setText("Player Percentage: " +Integer.toString(playerBoard.getPercentage()));
-            enemyPercentage.setText("Enemy Percentage: " +Integer.toString(enemyBoard.getPercentage()));
+            playerPercentage.setText("Player Percentage: " +Float.toString(playerBoard.getPercentage()) + "%" );
+            enemyPercentage.setText("Enemy Percentage: " +Float.toString(enemyBoard.getPercentage()) + "%" );
             enemyScore.setText("Enemy Score: " +Integer.toString(enemyBoard.getScore()));
             playerScore.setText("Player Score: " +Integer.toString(playerBoard.getScore()));
             

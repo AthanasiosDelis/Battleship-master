@@ -61,7 +61,7 @@ public class Board extends Parent {
     
     private int oneMoreShot = 0;
     private int oneGoodShot = 0;
-    private int percentage = 0;
+    private float percentage = 0;
     private int score = 0 ;
     
     //MAybe here the exception!!!
@@ -318,7 +318,7 @@ public class Board extends Parent {
     	return oneMoreShot;
     }
     
-    public int getPercentage() {
+    public float getPercentage() {
     	return percentage;
     }
 
