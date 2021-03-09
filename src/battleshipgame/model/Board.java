@@ -1,5 +1,6 @@
 package src.battleshipgame.model;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
@@ -9,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import src.battleshipgame.OverlapTilesException;
 import src.battleshipgame.OversizeException;
+import src.battleshipgame.PopUpWindow;
 import src.battleshipgame.AdjacentTilesException;
 import src.battleshipgame.InvalidCountExeception;
 
@@ -20,7 +22,7 @@ import java.util.LinkedList;
 //import static src.battleshipgame.model.BattleshipFactory.getTotalShipsCount;
 
 /**
- * Created by yanair on 05.05.17.
+ * Created by Athanasios Delis on 07.03.2021.
  */
 public class Board extends Parent {
 	
@@ -155,14 +157,19 @@ public class Board extends Parent {
         	try {
         		if (startField.getColumn() + shipSize > COL) throw new OversizeException();
         	} catch (OversizeException e) {
-        		System.out.println("OverSize");
+        		
+        		PopUpWindow.display("Exception","OverSize") ;
+        		Platform.exit();
+            	System.exit(0);
                 return false;
             }
         } else {
         	try {
         		if (startField.getRow() + shipSize > COL) throw new OversizeException();
         	} catch (OversizeException e){
-        		System.out.println("OverSize");
+        		PopUpWindow.display("Exception","OverSize") ;
+        		Platform.exit();
+            	System.exit(0);
                 return false;
             }
         }
@@ -174,7 +181,9 @@ public class Board extends Parent {
                 try{
                 	if (currentField.isOccupied()) throw new OverlapTilesException();                	
                 }catch (OverlapTilesException e){
-                	System.out.println("Overlap");
+                	PopUpWindow.display("Exception","Overlap") ;
+                	Platform.exit();
+                	System.exit(0);
                 	return false;
                 }                
             } else {
@@ -182,7 +191,9 @@ public class Board extends Parent {
                 try{
                 	if (currentField.isOccupied()) throw new OverlapTilesException();
                 }catch (OverlapTilesException e){
-                	System.out.println("Overlap");
+                	PopUpWindow.display("Exception","Overlap") ;
+                	Platform.exit();
+                	System.exit(0);
                     return false;
                 }
             }
@@ -195,7 +206,9 @@ public class Board extends Parent {
                 try{
                 	if (currentField.isBusy()) throw new AdjacentTilesException();                	
                 }catch (AdjacentTilesException e){
-                	System.out.println("Adjacent");
+                	PopUpWindow.display("Exception","Adjacent") ;
+                	Platform.exit();
+                	System.exit(0);
                 	return false;
                 }                
             } else {
@@ -203,7 +216,9 @@ public class Board extends Parent {
                 try{
                 	if (currentField.isBusy()) throw new AdjacentTilesException();
                 }catch (AdjacentTilesException e){
-                	System.out.println("Adjacent");
+                	PopUpWindow.display("Exception","Adjacent") ;
+                	Platform.exit();
+                	System.exit(0);
                     return false;
                 }
             }

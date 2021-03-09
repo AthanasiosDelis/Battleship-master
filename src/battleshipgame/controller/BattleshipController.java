@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
- * Created by yanair on 06.05.17.
+ * Created by Athanasios Delis on 07.03.2021.
  */
 public class BattleshipController implements Initializable {
 
@@ -134,7 +134,7 @@ public class BattleshipController implements Initializable {
     	for(String s:playerStats) {  		
     		stats +=  s + '\n';
     	}       			
-    	PopUpWindow.display("6bii Player Shots",stats) ;    	
+    	PopUpWindow.display("6bii Player Shots",stats) ;     	
     }
     
     @FXML
@@ -154,6 +154,7 @@ public class BattleshipController implements Initializable {
     	if ( !gameRunning || !v ) {  		
     		return ;
     	}
+    	//RANDOM TURN
         playerMove();
     }
         
@@ -190,7 +191,8 @@ public class BattleshipController implements Initializable {
     	};
     
 		
-	
+    private Scanner scEnemy;
+    private Scanner scPlayer;
     
     @FXML
     private void load(ActionEvent event) throws FileNotFoundException {
@@ -206,11 +208,10 @@ public class BattleshipController implements Initializable {
         //System.out.println(PopUpWindow.str[1]);
         String pathEnemy = PopUpWindow.str[0];
         String pathPlayer = PopUpWindow.str[1];
-       // medialab/enemy_default.txt
-        // medialab/player_default_ok.txt
-        
-        Scanner scEnemy = new Scanner(new File(pathEnemy));
-        Scanner scPlayer = new Scanner(new File(pathPlayer));
+       // "medialab/enemy_default.txt";
+        // "medialab/player_default_adj.txt";
+        scEnemy = new Scanner(new File(pathEnemy));
+        scPlayer = new Scanner(new File(pathPlayer));
         
         int row = -1;
         while (scEnemy.hasNextLine())
@@ -254,13 +255,15 @@ public class BattleshipController implements Initializable {
         enemyTurn = false;
         playerBoard = new Board( true);        
         enemyBoard = new Board( false);        
-        placeShipsLoad(playerBoard);
-        placeShipsLoad(enemyBoard);
+        placeShipsLoadPlayer(playerBoard);
+        placeShipsLoadEnemy(enemyBoard);
         gameRunning = true;        
         try {
-        	if(playerBoard.getTotalShipsCount() > 5 ) throw new InvalidCountExeception();
+        	if(playerBoard.getTotalShipsCount()  > 5 ) throw new InvalidCountExeception();
         } catch(InvalidCountExeception e ) {
-        	System.out.println("InvalidCount");
+        	
+        	PopUpWindow.display("Exception","InvalidCount") ;
+        	Platform.exit();
         	System.exit(0);
         } 
         enemyBoardArea.getChildren().add(enemyBoard);
@@ -276,13 +279,22 @@ public class BattleshipController implements Initializable {
     	board.placeShipOnBoardRandomly(board.destroyer);
     }
     
-    private void placeShipsLoad(Board board) {
+    private void placeShipsLoadEnemy(Board board) {
     	
     	board.placeShipOnBoardLoad(board.carrier,matrixEnemy[4][1],matrixEnemy[4][2],matrixEnemy[4][3]);
     	board.placeShipOnBoardLoad(board.battleship,matrixEnemy[3][1],matrixEnemy[3][2],matrixEnemy[3][3]);
     	board.placeShipOnBoardLoad(board.cruiser,matrixEnemy[2][1],matrixEnemy[2][2],matrixEnemy[2][3]);
     	board.placeShipOnBoardLoad(board.submarine,matrixEnemy[1][1],matrixEnemy[1][2],matrixEnemy[1][3]);
     	board.placeShipOnBoardLoad(board.destroyer,matrixEnemy[0][1],matrixEnemy[0][2],matrixEnemy[0][3]);
+    }
+    
+    private void placeShipsLoadPlayer(Board board) {
+    	
+    	board.placeShipOnBoardLoad(board.carrier,matrixPlayer[4][1],matrixPlayer[4][2],matrixPlayer[4][3]);
+    	board.placeShipOnBoardLoad(board.battleship,matrixPlayer[3][1],matrixPlayer[3][2],matrixPlayer[3][3]);
+    	board.placeShipOnBoardLoad(board.cruiser,matrixPlayer[2][1],matrixPlayer[2][2],matrixPlayer[2][3]);
+    	board.placeShipOnBoardLoad(board.submarine,matrixPlayer[1][1],matrixPlayer[1][2],matrixPlayer[1][3]);
+    	board.placeShipOnBoardLoad(board.destroyer,matrixPlayer[0][1],matrixPlayer[0][2],matrixPlayer[0][3]);
     }
     
     
@@ -349,7 +361,7 @@ public class BattleshipController implements Initializable {
                 gameRunning = false;
                 gameResult.setText("You won the game!");
             }*/
-
+          //RANDOM TURN
             if (gameRunning) {
                 enemyMove();
             }
@@ -400,11 +412,13 @@ public class BattleshipController implements Initializable {
         		//System.out.println(Boolean.parseBoolean(enemyStats.get(enemyStats.size()-1)));
         		row = random.nextInt(10);
         		col = random.nextInt(10);
+        		next = 0;
         		initialize = 1;
         	}
         	//START
         	else if (turn == 1 && !strategy) {
         		initialize = 1;
+        		next = 0;
         		row = random.nextInt(10);
         		col = random.nextInt(10);
         	}
@@ -415,6 +429,7 @@ public class BattleshipController implements Initializable {
     			strategy = true;
     			initialize = 2;
     			success = false;
+    			next = 0;
     			
     			array [4][0]  = r;
 				array [4][1]  = c;   
@@ -666,6 +681,7 @@ public class BattleshipController implements Initializable {
             
         } while (enemyTurn);
         
+      //RANDOM TURN
         turn++;
         if( turn == lastTurn) {
         	int enemyScor = playerBoard.getScore();

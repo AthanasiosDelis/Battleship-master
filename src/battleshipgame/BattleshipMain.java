@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by yanair on 06.05.17.
+ * Created by Athanasios Delis on 07.03.2021.
  */
 
 public class BattleshipMain extends Application {
@@ -15,7 +15,7 @@ public class BattleshipMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("gameScene.fxml"));
-        primaryStage.setTitle("Medialab BATTLESHIP");
+        primaryStage.setTitle("MediaLab Battleship");
         primaryStage.setScene(new Scene(root, 800, 650));
         primaryStage.setResizable(true);
         primaryStage.show();

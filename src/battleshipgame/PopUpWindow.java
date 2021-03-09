@@ -52,19 +52,32 @@ public class PopUpWindow {
 	//private JFrame ourFrame = new JFrame("Enemy Ships");
 	
 	public static String[] str = new String[2];
+	
 	public static String[] SignUpForm(String title){
 		
-	
+	str = new String[2];
 	Stage window= new Stage();
 	window.initModality(Modality.APPLICATION_MODAL);
 	window.setTitle(title);
 	window.setMinWidth(350);
 	
 	//String[] string = new String[2];
+	Label label0 = new Label();
+	Label label1 = new Label();
+	Label label2 = new Label();
+	Label label3 = new Label();
+	Label label4 = new Label();
+	
+	label0.setText("Proper Form General Example: " + '\n' + "medialab/NAME_OF_FILLE.txt");
+	label1.setText("Enemy Path");
+	label2.setText("Proper Form Example: " + '\n' + "medialab/enemy_default.txt");
+	label3.setText("Player Path");
+	label4.setText("Proper Form Example: " + '\n' + "medialab/player_default.txt");
+	
 	TextField path1 = new TextField();
 	TextField path2 = new TextField();
 	
-	Button closeButton = new Button("Close the window");
+	Button closeButton = new Button("Load the paths");
 	closeButton.setOnAction(e -> {
 		str[0] = path1.getText();		
 		str[1] = path2.getText();
@@ -74,8 +87,7 @@ public class PopUpWindow {
 	});
 	
 	VBox layout = new VBox(10);
-	layout.getChildren().addAll(path1, path2, closeButton);
-	layout.setAlignment(Pos.CENTER);
+	layout.getChildren().addAll(label0, label1 , label2, path1, label3, label4, path2, closeButton); 
 	
 	Scene scene = new Scene(layout);
 	window.setScene(scene);

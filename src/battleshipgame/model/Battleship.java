@@ -1,7 +1,7 @@
 package src.battleshipgame.model;
 
 /**
- * Created by yanair on 05.05.17.
+ * Created by Athanasios Delis on 07.03.2021.
  */
 public class Battleship {
 
