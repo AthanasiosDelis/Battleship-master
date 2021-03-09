@@ -15,7 +15,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.battleshipgame.controller.BattleshipController">
    <top>
-      <VBox prefHeight="400.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="400.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="200.0">
                <children>
@@ -133,11 +133,11 @@
       <Button mnemonicParsing="false" onAction="#Fire" text="Fire" BorderPane.alignment="CENTER" />
    </left>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="100.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="gameResult" text="gameResult" />
+            <Label fx:id="gameResult" maxWidth="400.0" text="gameResult" />
             <Separator orientation="VERTICAL" />
-            <Label fx:id="playsFirst" text="playsFirst" />
+            <Label fx:id="playsFirst" maxWidth="400.0" text="playsFirst" />
          </children>
       </HBox>
    </bottom>

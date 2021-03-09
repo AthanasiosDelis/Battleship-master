@@ -7,16 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by Athanasios Delis on 07.03.2021.
+ * @author Athanasios Delis on 07.03.2021.
+ *
  */
-
 public class BattleshipMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("gameScene.fxml"));
         primaryStage.setTitle("MediaLab Battleship");
-        primaryStage.setScene(new Scene(root, 1100, 650));
+        primaryStage.setScene(new Scene(root, 1000, 550));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

@@ -22,7 +22,8 @@ import java.util.LinkedList;
 //import static src.battleshipgame.model.BattleshipFactory.getTotalShipsCount;
 
 /**
- * Created by Athanasios Delis on 07.03.2021.
+ * @author Athanasios Delis on 07.03.2021.
+ *
  */
 public class Board extends Parent {
 	
