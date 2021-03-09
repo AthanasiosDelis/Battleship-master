@@ -2,12 +2,16 @@ package src.battleshipgame.model;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import src.battleshipgame.OverlapTilesException;
 import src.battleshipgame.OversizeException;
 import src.battleshipgame.PopUpWindow;
@@ -63,24 +67,41 @@ public class Board extends Parent {
     private int oneGoodShot = 0;
     private float percentage = 0;
     private int score = 0 ;
-    
-    //MAybe here the exception!!!
-    
-    
     private int shipsCount = getTotalShipsCount();
-    
-    private int shipsAlive = 1;
-    private int shipsWounde = 0;
-    private int shipsDead = 0;
     private boolean playerBoard;
     private VBox rows = new VBox();
     private List<Field> highlightedFields = new ArrayList<>();
     
     
     //Makes the tableaux
-    
+    //READY GIT HUB CODE!!!
     public Board( boolean playerBoard) {
-        this.playerBoard = playerBoard;
+    	
+    	Text [] txt1 = new Text[10];
+    	Text [] txt2 = new Text[11];
+    	this.playerBoard = playerBoard;
+    	
+    	for(int i=1; i< 11; i++) {
+    		txt1[i-1] = new Text(Integer.toString(i));
+    		txt1[i-1].setFont(Font.font(12));
+    	}
+    	for(int i=0; i< 11; i++) {
+    		txt2[i] = new Text(Integer.toString(i));
+    		txt2[i].setFont(Font.font(12));
+    	}
+
+        
+        HBox hboxr = new HBox(25, txt1[0], txt1[1],
+        		txt1[2],txt1[3], txt1[4], txt1[5], txt1[6], txt1[7],
+        		txt1[8], txt1[9] );
+    	
+    	VBox hboxc = new VBox(16, txt2[0], txt2[1],
+    			txt2[2],txt2[3], txt2[4], txt2[5], txt2[6], txt2[7],
+    			txt2[8], txt2[9], txt2[10]);
+    	
+    	hboxr.setAlignment(Pos.CENTER);
+    	hboxc.setAlignment(Pos.CENTER);
+    	
         for (int row = 0; row < ROW; row++) {
             HBox currentRow = new HBox();
             for (int col = 0; col < COL; col++) {
@@ -90,9 +111,16 @@ public class Board extends Parent {
             }
             rows.getChildren().add(currentRow);
         }
-        getChildren().add(rows);
+         
+        getChildren().add(rows);        
+        VBox vbox = new  VBox(20, hboxr , rows);
+        
+        getChildren().add(vbox);
+        HBox hbox = new HBox(20, hboxc, vbox);
+        getChildren().add(hbox);
+        //getChildren().add(hbox);
     }
-
+        
     //PUTS SHIP IN ITS PLACE
     public boolean setShip(Battleship ship, Field startField) {
         int shipSize = ship.getShipSize();

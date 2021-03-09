@@ -17,7 +17,7 @@ public class BattleshipMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("gameScene.fxml"));
         primaryStage.setTitle("MediaLab Battleship");
         primaryStage.setScene(new Scene(root, 1000, 550));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.show();
     }
 

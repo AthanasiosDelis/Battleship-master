@@ -415,6 +415,24 @@ public class BattleshipController implements Initializable {
                 gameRunning = false;
                 gameResult.setText("You won the game!");
             }
+            
+            //RANDOM TURN
+        	if(!firstTurnPlayer) {
+                turn++;
+                if( turn == lastTurn) {
+                	int enemyScor = playerBoard.getScore();
+                	int playerScor = enemyBoard.getScore() ;
+                	if(playerScor > enemyScor) {
+                		gameRunning = false;
+                		gameResult.setText("You won the game!");
+                	}else if(playerScor <= enemyScor) {
+                		gameRunning = false;
+                		gameResult.setText("You lost :(");
+                		
+                	}
+                	gameRunning = false;        	        	        	
+                }
+        	}
           
             if (gameRunning && firstTurnPlayer ) {
                 enemyMove();
@@ -595,7 +613,7 @@ public class BattleshipController implements Initializable {
     				}
 
         		}  
-        }
+        	}
 
         	forbit = false;
             field = playerBoard.getField(row, col);
@@ -654,24 +672,28 @@ public class BattleshipController implements Initializable {
             gameResult.setText("Computer won the game!");
         }
       
-        if (gameRunning && !firstTurnPlayer ) {
-        	playerMove();
-        }
+
         
       //RANDOM TURN
-        turn++;
-        if( turn == lastTurn) {
-        	int enemyScor = playerBoard.getScore();
-        	int playerScor = enemyBoard.getScore() ;
-        	if(playerScor > enemyScor) {
-        		gameRunning = false;
-        		gameResult.setText("You won the game!");
-        	}else if(playerScor <= enemyScor) {
-        		gameRunning = false;
-        		gameResult.setText("You lost :(");
-        		
-        	}
-        	gameRunning = false;        	        	        	
+    	if( firstTurnPlayer) {
+            turn++;
+            if( turn == lastTurn) {
+            	int enemyScor = playerBoard.getScore();
+            	int playerScor = enemyBoard.getScore() ;
+            	if(playerScor > enemyScor) {
+            		gameRunning = false;
+            		gameResult.setText("You won the game!");
+            	}else if(playerScor <= enemyScor) {
+            		gameRunning = false;
+            		gameResult.setText("You lost :(");
+            		
+            	}
+            	gameRunning = false;        	        	        	
+            }
+    	}
+    	
+        if (gameRunning && !firstTurnPlayer ) {
+        	playerMove();
         }
         
         
