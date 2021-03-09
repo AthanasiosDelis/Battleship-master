@@ -31,13 +31,14 @@ public class BattleshipController implements Initializable {
     public VBox playerBoardArea;
     private Board enemyBoard;
     private Board playerBoard;
+    private Board playerBoardComputerView;
+    private Board enemyBoardComputerView;
     private boolean gameRunning;
     private boolean enemyTurn;    
     private static int turn = 1;
-    private static int lastTurn = 101;
+    private static int lastTurn = 41;
     private static Random rand = new Random();
-    private static boolean firstTurnPlayer = rand.nextBoolean();    
-    private Battleship currentPlayerShip;    
+    private static boolean firstTurnPlayer = rand.nextBoolean();       
     private ArrayList<String> enemyStats = new ArrayList<String>();
     private ArrayList<String> playerStats = new ArrayList<String>();
     private Scanner scEnemy;
@@ -294,7 +295,9 @@ public class BattleshipController implements Initializable {
         gameRunning = false;
         enemyTurn = false;
         playerBoard = new Board( true);        
-        enemyBoard = new Board( false);        
+        enemyBoard = new Board( false); 
+        playerBoardComputerView =  enemyBoard;
+        enemyBoardComputerView =  playerBoard;
         placeShipsLoadPlayer(playerBoard);
         placeShipsLoadEnemy(enemyBoard);
         gameRunning = true;        
