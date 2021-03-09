@@ -16,8 +16,8 @@ public class BattleshipMain extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("gameScene.fxml"));
         primaryStage.setTitle("MediaLab Battleship");
-        primaryStage.setScene(new Scene(root, 800, 650));
-        primaryStage.setResizable(true);
+        primaryStage.setScene(new Scene(root, 1100, 650));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

@@ -47,7 +47,8 @@ public class BattleshipController implements Initializable {
     private boolean enemyTurn;
     
     private static int turn = 1;
-    private static int lastTurn = 101;
+    private static int lastTurn = 41;
+    private static boolean firstTurnPlayer = true;
 
     private Battleship currentPlayerShip;
     
@@ -92,6 +93,9 @@ public class BattleshipController implements Initializable {
     
     @FXML
     private TextField playerCol ;
+    
+    @FXML
+    private Label playsFirst;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -155,7 +159,10 @@ public class BattleshipController implements Initializable {
     		return ;
     	}
     	//RANDOM TURN
-        playerMove();
+    	if( firstTurnPlayer) {
+    		playerMove();
+    	}
+        
     }
         
     private int[][] matrixPlayer =  { 
@@ -210,8 +217,14 @@ public class BattleshipController implements Initializable {
         String pathPlayer = PopUpWindow.str[1];
        // "medialab/enemy_default.txt";
         // "medialab/player_default_adj.txt";
-        scEnemy = new Scanner(new File(pathEnemy));
-        scPlayer = new Scanner(new File(pathPlayer));
+        try {
+        	scEnemy = new Scanner(new File(pathEnemy)); 
+        	scPlayer = new Scanner(new File(pathPlayer));
+        } catch (FileNotFoundException e) {
+            Platform.exit();
+        	System.exit(0);
+        }
+        
         
         int row = -1;
         while (scEnemy.hasNextLine())
@@ -251,6 +264,7 @@ public class BattleshipController implements Initializable {
         enemyColChoice.setText("");
         playerRowChoice.setText("");
         playerColChoice.setText("");
+        playsFirst.setText("Human Player Plays First: " + Boolean.toString( firstTurnPlayer));
         gameRunning = false;
         enemyTurn = false;
         playerBoard = new Board( true);        
@@ -350,34 +364,32 @@ public class BattleshipController implements Initializable {
             }
             playerStats.add(statsTurn);
             //System.out.println(playerStats);
-            playerShipsRemaining.setText(Integer.toString(playerBoard.getShipsCount()));
-            enemyShipsRemaining.setText(Integer.toString(enemyBoard.getShipsCount()));
-            playerPercentage.setText(Integer.toString(playerBoard.getPercentage()));
-            enemyPercentage.setText(Integer.toString(enemyBoard.getPercentage()));
-            enemyScore.setText(Integer.toString(enemyBoard.getScore()));
-            playerScore.setText(Integer.toString(playerBoard.getScore()));
+            playerShipsRemaining.setText("Player ShipsRemaining: " + Integer.toString(playerBoard.getShipsCount()));
+            enemyShipsRemaining.setText("Enemy ShipsRemaining: " +Integer.toString(enemyBoard.getShipsCount()));
+            playerPercentage.setText("Player Percentage: " +Integer.toString(playerBoard.getPercentage()));
+            enemyPercentage.setText("Enemy Percentage: " +Integer.toString(enemyBoard.getPercentage()));
+            enemyScore.setText("Enemy Score: " +Integer.toString(enemyBoard.getScore()));
+            playerScore.setText("Player Score: " +Integer.toString(playerBoard.getScore()));
             
-            /*if (enemyBoard.getShipsCount() == 0) {
+            if (enemyBoard.getShipsCount() == 0) {
                 gameRunning = false;
                 gameResult.setText("You won the game!");
-            }*/
+            }
           //RANDOM TURN
-            if (gameRunning) {
+            if (gameRunning && firstTurnPlayer ) {
                 enemyMove();
             }
         
     }
     
-    private static void print2D(int mat[]) {
-        for (int row: mat) System.out.println(Integer.toString(row));
-    }
+   
     
     boolean success = false ;
     int r = -1;
     int c = -1;
     int l = -1;
     int [] where = new int[2];
-    //int [] where = new int[2];
+    
     int [][] array = new int[5][2];
     int [][] array1 = {
     		{0,0},
@@ -393,7 +405,7 @@ public class BattleshipController implements Initializable {
     ArrayList<Integer> list = new ArrayList<Integer>();
     //Automates enemy moves
     private int next = 0;
-    private int [] tmp = new int[2];
+    
     boolean alive = true;
     boolean forbit = false;
     private void enemyMove() {
@@ -625,8 +637,8 @@ public class BattleshipController implements Initializable {
             playerColChoice.setText(Integer.toString(col+1));
             //System.out.println(" HERE 3 BEFORE SHOOT");
             if (field.wasShot()) {
-            	System.out.println("Enemy TURN: " + turn);
-            	System.out.println(" HERE 4 was SHOOTed ");
+            	//System.out.println("Enemy TURN: " + turn);
+            	//System.out.println(" HERE 4 was SHOOTed ");
             	success = false;
             	enemyTurn = true;
                 //break;
@@ -634,12 +646,12 @@ public class BattleshipController implements Initializable {
             	//System.out.println(" HERE 5 ");
             boolean goodShot = playerBoard.receiveShot(field);
             enemyTurn = false;
-            playerShipsRemaining.setText(Integer.toString(playerBoard.getShipsCount()));
-            enemyShipsRemaining.setText(Integer.toString(enemyBoard.getShipsCount()));
-            playerPercentage.setText(Integer.toString(playerBoard.getPercentage()));
-            enemyPercentage.setText(Integer.toString(enemyBoard.getPercentage()));
-            enemyScore.setText(Integer.toString(enemyBoard.getScore()));
-            playerScore.setText(Integer.toString(playerBoard.getScore()));
+            playerShipsRemaining.setText("Player ShipsRemaining: " + Integer.toString(playerBoard.getShipsCount()));
+            enemyShipsRemaining.setText("Enemy ShipsRemaining: " +Integer.toString(enemyBoard.getShipsCount()));
+            playerPercentage.setText("Player Percentage: " +Integer.toString(playerBoard.getPercentage()));
+            enemyPercentage.setText("Enemy Percentage: " +Integer.toString(enemyBoard.getPercentage()));
+            enemyScore.setText("Enemy Score: " +Integer.toString(enemyBoard.getScore()));
+            playerScore.setText("Player Score: " +Integer.toString(playerBoard.getScore()));
             
             if(enemyStats.size() > 4) {
             	enemyStats.remove(0);
@@ -652,7 +664,7 @@ public class BattleshipController implements Initializable {
             statsTurn += "Hit: " + Boolean.toString(goodShot) + '\n';		
             success = goodShot;
             if(goodShot) {
-            	System.out.println(" HERE 5 SUCCESS = TRUE ");
+            	//System.out.println(" HERE 5 SUCCESS = TRUE ");
             	r = row;
             	c = col;
             	l = field.getLength();
@@ -699,21 +711,4 @@ public class BattleshipController implements Initializable {
         	
     }
 
-   
-    
-    
-
-    
-  //MUst not change
-    //MAY NOT NEEDED IN HE FINAL DESIGN
-   /* private void placeShipsLoad(Board board) {
-    	
-    	board.placeShipOnBoardLoad(board.carrier,matrixEnemy[4][1],matrixEnemy[4][2],matrixEnemy[4][3]);
-    	board.placeShipOnBoardLoad(board.battleship,matrixEnemy[3][1],matrixEnemy[3][2],matrixEnemy[3][3]);
-    	board.placeShipOnBoardLoad(board.cruiser,matrixEnemy[2][1],matrixEnemy[2][2],matrixEnemy[2][3]);
-    	board.placeShipOnBoardLoad(board.submarine,matrixEnemy[1][1],matrixEnemy[1][2],matrixEnemy[1][3]);
-    	board.placeShipOnBoardLoad(board.destroyer,matrixEnemy[0][1],matrixEnemy[0][2],matrixEnemy[0][3]);
-    }*/
-    
-    //,matrixEnemy[row][1],matrixEnemy[row][2],matrixEnemy[row][3]
 }

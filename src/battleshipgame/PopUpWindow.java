@@ -77,7 +77,7 @@ public class PopUpWindow {
 	TextField path1 = new TextField();
 	TextField path2 = new TextField();
 	
-	Button closeButton = new Button("Load the paths");
+	Button closeButton = new Button("Load");
 	closeButton.setOnAction(e -> {
 		str[0] = path1.getText();		
 		str[1] = path2.getText();
