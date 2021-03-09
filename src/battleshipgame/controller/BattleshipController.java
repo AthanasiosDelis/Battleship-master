@@ -159,7 +159,8 @@ public class BattleshipController implements Initializable {
 				if( !isNumeric(tmp1) || !isNumeric(tmp2)) throw new CoordinatesException ();
 				row = Integer.parseInt(tmp1);
 				col = Integer.parseInt(tmp2);
-				if((row >10 && row<1) || (col >10 && col<1)) throw new CoordinatesException ();
+				//PopUpWindow.display(Boolean.toString(row >10 || row<1),Boolean.toString(col >10 || col<1));
+				if((row >10 || row<1) || (col >10 || col<1)) throw new CoordinatesException ();
 				//if() throw	new CoordinatesException ();		
 			}catch(CoordinatesException e) {
 				PopUpWindow.display("Exception","Numbers from 1-10 as coordinates, dummy!");
